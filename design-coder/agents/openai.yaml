@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design Coder"
+  short_description: "Build CSS-only visual component prototypes"
+  default_prompt: "Use $design-coder to prototype this component from its approved specification."
