@@ -26,7 +26,7 @@ design-system/
     └── style-template.css
 ```
 
-The two helper files in `scripts/` keep generation deterministic and formatting separate from project-specific base styles. Do not add a parallel token source, hand-edited global CSS, per-component token files, or duplicate component documentation without a concrete need.
+The token utility, validator, generator, base-style template, and test helper in `scripts/` keep generation deterministic and formatting separate from project-specific base styles. Do not add a parallel token source, hand-edited global CSS, per-component token files, or duplicate component documentation without a concrete need.
 
 ## Decision ledger
 

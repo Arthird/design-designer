@@ -126,3 +126,52 @@ Expected behavior:
 - documents the expected production behavior and leaves a TODO;
 - may show a static expanded visual state with correct semantics;
 - does not write JavaScript or imply the interaction works.
+
+## 11. Independent subskill installation
+
+Initial workspace: only one subskill directory, with the other skills absent and no project design system yet.
+
+Expected behavior:
+
+- the subskill loads without needing a sibling skill directory;
+- its local `SKILL.md` and `references/` links resolve;
+- it inspects the project and asks only for the missing design-system context needed for its own task;
+- it reports the missing upstream artifacts and does not fabricate approved rules, tokens, or specifications;
+- it can recommend the relevant sibling or orchestrator without claiming that specialist ran.
+
+## 12. Orchestrator handoff
+
+Initial workspace: inspected project facts, approved base rules, and a component specification with complete state classification.
+
+Prompt: “Continue through tokens, the visual prototype, and audit.”
+
+Expected behavior:
+
+- invokes `$token-writer` for the token source and CSS regeneration;
+- invokes `$design-coder` only after the relevant component specification is sufficiently approved;
+- invokes `$design-auditor` after tokens, initial specs, and prototypes;
+- passes source artifacts and decision context instead of asking the user to repeat them;
+- updates registry, exceptions, and changelog based on the actual outcomes;
+- does not declare `Reviewed` while significant findings remain.
+
+## 13. Missing or incomplete project artifacts
+
+Initial workspace: a partial `design-system/` with a registry row, no component folder, and a component spec missing accessibility guidance.
+
+Expected behavior:
+
+- identifies missing required files and directories;
+- reports which component specification sections or state classifications are incomplete;
+- distinguishes a missing baseline artifact from an implementation defect;
+- does not invent completed evidence or mark the component reviewed;
+- creates or updates only the artifacts needed to restore the documented contract.
+
+## 14. Project-language behavior
+
+Prompt in Russian: “Создай визуальный прототип кнопки по утверждённой спецификации.”
+
+Expected behavior:
+
+- communicates in Russian during the task;
+- keeps repository instructions and generated artifact documentation in English unless the project has already chosen another documentation language;
+- does not translate established token names or BEM classes without a documented reason.

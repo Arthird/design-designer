@@ -11,7 +11,7 @@ Produce a static visual prototype that demonstrates approved component design in
 
 Respond in the language the user uses. Keep code, comments, artifact headings, and TODOs in English unless the enclosing project uses another documentation language.
 
-Read [references/prototype-rules.md](references/prototype-rules.md) before deciding state representation or BEM scope. Consult [OpenAI's primary references](../design-designer/references/sources.md) for linked standards only when needed; official standards override this skill when they are more restrictive.
+Read [references/prototype-rules.md](references/prototype-rules.md) before deciding state representation or BEM scope. Read [references/sources.md](references/sources.md) when primary standards or platform guidance are needed; official standards override this skill when they are more restrictive.
 
 ## Required inputs
 

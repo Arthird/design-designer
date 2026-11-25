@@ -11,7 +11,7 @@ Own `design-system/design-tokens.json`. Produce valid, maintainable tokens that 
 
 Respond in the language the user uses. Keep token descriptions and artifact headings in English unless the project already establishes another documentation language.
 
-Read [references/token-authoring.md](references/token-authoring.md) before authoring or changing the token model. Consult [../design-designer/references/sources.md](../design-designer/references/sources.md) for the pinned format and primary references.
+Read [references/token-authoring.md](references/token-authoring.md) before authoring or changing the token model. Read [references/sources.md](references/sources.md) when checking the pinned format or platform implications.
 
 ## Context to inspect
 

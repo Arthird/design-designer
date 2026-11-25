@@ -29,9 +29,9 @@ Read [references/workflow-details.md](references/workflow-details.md) when estab
 
 | Work | Route |
 |---|---|
-| Create or change `design-tokens.json`; assess token types, aliases, and platform fit | Invoke `$token-writer` when available; otherwise follow `../token-writer/SKILL.md` and recommend explicit invocation |
-| Specify, build, or revise HTML/CSS visual component prototypes | Invoke `$design-coder` when available; otherwise follow `../design-coder/SKILL.md` |
-| Audit rules, tokens, specs, registry, accessibility, semantics, or prototypes | Invoke `$design-auditor` when available; otherwise follow `../design-auditor/SKILL.md` |
+| Create or change `design-tokens.json`; assess token types, aliases, and platform fit | Invoke `$token-writer` when available; otherwise follow the installed sibling's `SKILL.md` and recommend explicit invocation |
+| Specify, build, or revise HTML/CSS visual component prototypes | Invoke `$design-coder` when available; otherwise follow the installed sibling's `SKILL.md` |
+| Audit rules, tokens, specs, registry, accessibility, semantics, or prototypes | Invoke `$design-auditor` when available; otherwise follow the installed sibling's `SKILL.md` |
 
 When a sibling is unavailable, continue with equivalent in-scope checks and tell the user which optional capability was unavailable. Do not claim a subskill ran when it did not.
 

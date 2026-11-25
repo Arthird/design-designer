@@ -11,7 +11,7 @@ Review the design system against the project's approved rules and applicable sta
 
 Respond in the language the user uses. Keep report headings and artifact paths in English unless the project uses another report language.
 
-Read [references/audit-method.md](references/audit-method.md) before running or interpreting checks. Use [../design-designer/references/sources.md](../design-designer/references/sources.md) for primary links; cite a specific requirement only when it supports a finding.
+Read [references/audit-method.md](references/audit-method.md) before running or interpreting checks. Read [references/sources.md](references/sources.md) when a finding needs standards or platform evidence; cite a specific requirement only when it supports the finding.
 
 ## Scope
 
@@ -42,7 +42,7 @@ Run the bundled tool from the audited project:
 node /path/to/design-auditor/scripts/audit-design-system.js design-system
 ```
 
-It checks required files, token format and references through the project's validator, generated CSS freshness when the generator exists, CSS/HTML class extraction, forbidden prototype JavaScript, registry status values, and documented contrast pairs. Treat an unavailable check as `SKIPPED`, not `PASS`.
+It checks required files and component documentation, token format and references through the project's validator, generated CSS freshness when the generator exists, CSS/HTML class extraction and document references, forbidden prototype JavaScript, registry status and state-summary consistency, documented contrast pairs, and exceptions. Treat an unavailable check as `SKIPPED`, not `PASS`.
 
 When auditing the bundled example, use the project's `validate-tokens.js` as the format authority and the auditor as the additional cross-file reviewer. Automated results are limited to the assertions actually run.
 
