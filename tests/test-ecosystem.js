@@ -35,7 +35,20 @@ function checkSkills() {
     const text = fs.readFileSync(file, 'utf8');
     assert(text.includes(`name: ${name}`), `${name}/SKILL.md has wrong name`);
     assert(!text.includes('[TODO:'), `${name}/SKILL.md has unfinished scaffold TODO`);
+    assert(/(?:language the user uses|user's language)/i.test(text), `${name}/SKILL.md has no user-language behavior`);
+    assert(/(?:inspect|read|locate).{0,120}(?:project|repository)/is.test(text), `${name}/SKILL.md has no project-inspection requirement`);
   }
+}
+
+function checkProjectDocumentation() {
+  const required = ['README.md', 'CHANGELOG.md', 'LICENSE', '.gitignore', 'docs/verification.md'];
+  for (const file of required) assert(fs.existsSync(path.join(root, file)), `Missing package artifact ${file}`);
+  const readme = fs.readFileSync(path.join(root, 'README.md'), 'utf8');
+  for (const term of ['## Installation', '## Usage', '## Directory structure', '## Prerequisites', '## Known limitations', '## Verification']) {
+    assert(readme.includes(term), `README is missing ${term}`);
+  }
+  const ignored = fs.readFileSync(path.join(root, '.gitignore'), 'utf8');
+  assert(/node_modules\//.test(ignored) && /\.env/.test(ignored), '.gitignore omits expected runtime/secret entries');
 }
 
 function checkTemplate() {
@@ -49,6 +62,49 @@ function checkTemplate() {
   ];
   for (const relative of required) assert(fs.existsSync(path.join(template, relative)), `Missing template ${relative}`);
   assert(fs.existsSync(path.join(template, 'scripts', 'test-token-tools.js')), 'Token fixture test is missing');
+}
+
+function checkHtmlReferences() {
+  const htmlFiles = [];
+  for (const componentDir of fs.readdirSync(path.join(template, 'components'), { withFileTypes: true })) {
+    if (!componentDir.isDirectory()) continue;
+    for (const file of fs.readdirSync(path.join(template, 'components', componentDir.name))) {
+      if (file.endsWith('.html')) htmlFiles.push(path.join(template, 'components', componentDir.name, file));
+    }
+  }
+  assert(htmlFiles.length > 0, 'No component HTML examples found');
+  for (const file of htmlFiles) {
+    const html = fs.readFileSync(file, 'utf8');
+    for (const match of html.matchAll(/(?:href|src)=["']([^"'#?]+)["']/g)) {
+      const target = match[1];
+      if (/^(?:https?:|data:)/.test(target)) continue;
+      assert(fs.existsSync(path.resolve(path.dirname(file), target)), `${path.relative(root, file)} references missing ${target}`);
+    }
+  }
+}
+
+function checkStandaloneSkillReferences() {
+  const siblingNames = new Set(skills);
+  for (const name of skills) {
+    const skillFile = path.join(root, name, 'SKILL.md');
+    const text = fs.readFileSync(skillFile, 'utf8');
+    const siblingMentions = [...text.matchAll(new RegExp(`\\.\\./(${skills.join('|')})/`, 'g'))];
+    assert(siblingMentions.length === 0, `${name}/SKILL.md has a sibling-relative resource reference`);
+    for (const other of siblingNames) {
+      if (other === name) continue;
+      const resourceMention = new RegExp(`\\b${other}/(?:references|scripts|assets)/`, 'g');
+      assert(!resourceMention.test(text), `${name}/SKILL.md depends on ${other} resources`);
+    }
+    for (const match of text.matchAll(/\[[^\]]+\]\(([^)]+)\)/g)) {
+      const target = match[1].replace(/^<|>$/g, '');
+      if (/^(?:https?:|#|mailto:)/.test(target)) continue;
+      const resolved = path.resolve(path.dirname(skillFile), target.split('#')[0]);
+      const siblingRoot = path.dirname(skillFile);
+      assert(!resolved.startsWith(`${path.dirname(root)}${path.sep}`) || resolved.startsWith(`${siblingRoot}${path.sep}`), `${name}/SKILL.md depends on another sibling for local instructions`);
+      assert(fs.existsSync(resolved), `${name}/SKILL.md has missing local reference ${target}`);
+    }
+    assert(fs.existsSync(path.join(root, name, 'agents/openai.yaml')), `${name} has no agents/openai.yaml`);
+  }
 }
 
 function checkTsIdempotence() {
@@ -98,6 +154,10 @@ function checkNegativeTokens() {
     const badTypeFile = path.join(temp, 'bad-type.json');
     fs.writeFileSync(badTypeFile, JSON.stringify({ size: { $type: 'dimension', bad: { $value: { value: 1, unit: 'em' } } } }), 'utf8');
     assert.throws(() => validate(JSON.parse(fs.readFileSync(badTypeFile, 'utf8'))), /unit must be px or rem/, 'Unsupported dimension unit was not rejected');
+
+    const unsupportedTypeFile = path.join(temp, 'unsupported-type.json');
+    fs.writeFileSync(unsupportedTypeFile, JSON.stringify({ data: { $type: 'asset', $value: 'logo.svg' } }), 'utf8');
+    assert.throws(() => validate(JSON.parse(fs.readFileSync(unsupportedTypeFile, 'utf8'))), /not in the core 2025\.10 type set/, 'Unsupported token type was not rejected');
   } finally {
     fs.rmSync(temp, { recursive: true, force: true });
   }
@@ -116,6 +176,38 @@ function checkNegativeAudit() {
     assert(findings.some((item) => item.id === 'BEM-001'), 'Out-of-scope BEM class was not reported');
     assert(findings.some((item) => item.severity === 'High'), 'High-severity finding missing');
     assert(findings.some((item) => item.severity === 'Medium'), 'Medium-severity finding missing');
+  } finally {
+    fs.rmSync(temp, { recursive: true, force: true });
+  }
+}
+
+function checkMissingArtifacts() {
+  const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'design-designer-missing-'));
+  try {
+    const project = path.join(temp, 'design-system');
+    copyDir(template, project);
+    fs.rmSync(path.join(project, 'changelog.md'));
+    fs.rmSync(path.join(project, 'components'), { recursive: true, force: true });
+    const { auditSystem } = require(auditor);
+    const findings = auditSystem(project);
+    assert(findings.some((item) => item.id === 'FILE-001' && item.file === 'changelog.md'), 'Missing changelog was not reported');
+    assert(findings.some((item) => item.id === 'FILE-002'), 'Missing components directory was not reported');
+  } finally {
+    fs.rmSync(temp, { recursive: true, force: true });
+  }
+}
+
+function checkIncompleteDocumentation() {
+  const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'design-designer-incomplete-spec-'));
+  try {
+    const project = path.join(temp, 'design-system');
+    copyDir(template, project);
+    const specFile = path.join(project, 'components', 'button', 'component.md');
+    const spec = fs.readFileSync(specFile, 'utf8').replace(/^## Accessibility requirements[\s\S]*?(?=^## Dependencies)/m, '');
+    fs.writeFileSync(specFile, spec, 'utf8');
+    const { auditSystem } = require(auditor);
+    const findings = auditSystem(project);
+    assert(findings.some((item) => item.id === 'SPEC-004' && /Accessibility requirements/.test(item.message)), 'Incomplete component specification was not reported');
   } finally {
     fs.rmSync(temp, { recursive: true, force: true });
   }
@@ -198,6 +290,22 @@ function checkNoPrototypeJs() {
   }
 }
 
+function checkComponentContract() {
+  const componentDir = path.join(template, 'components', 'button');
+  for (const file of ['component.md', 'component.css', 'button.html']) {
+    assert(fs.existsSync(path.join(componentDir, file)), `Component contract is missing ${file}`);
+  }
+  const spec = fs.readFileSync(path.join(componentDir, 'component.md'), 'utf8');
+  const sections = ['Overview', 'Design specification', 'Variants', 'State coverage', 'Interactions and expected behavior', 'Responsive behavior', 'Accessibility requirements', 'Dependencies', 'Exceptions', 'References'];
+  for (const section of sections) assert(new RegExp(`^##\\s+${section}$`, 'im').test(spec), `Component spec is missing ${section}`);
+  const css = fs.readFileSync(path.join(componentDir, 'component.css'), 'utf8');
+  const selectors = css.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\{[^{}]*\}/g, '{}');
+  const classes = [...selectors.matchAll(/\.([A-Za-z0-9_-]+)/g)].map((match) => match[1]);
+  assert(classes.length > 0 && classes.every((name) => name === 'button' || name.startsWith('button__') || name.startsWith('button--')), `Component CSS has unexpected selectors: ${[...new Set(classes)].join(', ')}`);
+  assert(/\.button:hover/.test(css) && /\.button:focus-visible/.test(css) && /\.button:active/.test(css) && /\.button:disabled/.test(css), 'Expected CSS-native button states are missing');
+  assert(fs.existsSync(path.join(componentDir, 'button-disabled.html')) && fs.existsSync(path.join(componentDir, 'button-loading.html')), 'Static button state examples are missing');
+}
+
 function checkSkillRouting() {
   const files = {
     orchestrator: path.join(root, 'design-designer', 'SKILL.md'),
@@ -210,6 +318,9 @@ function checkSkillRouting() {
   assert(/Do not add placeholder JavaScript|No JavaScript/i.test(text.coder), 'Coder does not prohibit prototype JavaScript');
   assert(/Automated checks.*accessibility|does not prove complete accessibility/i.test(text.auditor), 'Auditor does not bound automated accessibility claims');
   assert(/Never manually edit|rather than writing CSS/.test(text.tokens), 'Token writer does not preserve generated-CSS custody');
+  assert(/Own `design-system\/design-tokens\.json`/.test(text.tokens), 'Token writer has no explicit ownership boundary');
+  assert(/Do not mutate artifacts during an audit/.test(text.auditor), 'Auditor does not preserve baseline artifacts');
+  assert(/Produce a static visual prototype/.test(text.coder), 'Coder lacks an explicit expected output');
 }
 
 function checkOptionalIntegrationHonesty() {
@@ -219,19 +330,36 @@ function checkOptionalIntegrationHonesty() {
 }
 
 function main() {
-  checkSkills();
-  checkTemplate();
-  checkTsIdempotence();
-  checkNegativeTokens();
-  checkNegativeAudit();
-  checkStaleCss();
-  checkAuditSummaryEncoding();
-  checkStaleCssAndRegistry();
-  checkRegistryStateMismatch();
-  checkNoPrototypeJs();
-  checkSkillRouting();
-  checkOptionalIntegrationHonesty();
-  console.log(`PASS: ${skills.length} skills, template, token fixtures, generation determinism, and positive/negative audits`);
+  const checks = [
+    ['skill manifests', checkSkills],
+    ['package documentation', checkProjectDocumentation],
+    ['standalone skill references', checkStandaloneSkillReferences],
+    ['template artifacts', checkTemplate],
+    ['HTML asset references', checkHtmlReferences],
+    ['deterministic generated CSS', checkTsIdempotence],
+    ['template matches materialized example', () => {
+      const before = fs.readFileSync(path.join(template, 'style.css'), 'utf8');
+      const materialized = fs.readFileSync(path.join(root, 'design-system', 'style.css'), 'utf8');
+      assert(before === materialized, 'Template and materialized example differ');
+    }],
+    ['invalid token inputs', checkNegativeTokens],
+    ['prototype and BEM findings', checkNegativeAudit],
+    ['missing artifacts', checkMissingArtifacts],
+    ['incomplete documentation', checkIncompleteDocumentation],
+    ['stale generated CSS', checkStaleCss],
+    ['prototype script findings', checkAuditSummaryEncoding],
+    ['token/registry/CSS failures', checkStaleCssAndRegistry],
+    ['registry state mismatch', checkRegistryStateMismatch],
+    ['no JavaScript in examples', checkNoPrototypeJs],
+    ['component contract', checkComponentContract],
+    ['routing and boundaries', checkSkillRouting],
+    ['optional integration honesty', checkOptionalIntegrationHonesty],
+  ];
+  for (const [label, check] of checks) {
+    check();
+    console.log(`PASS: ${label}`);
+  }
+  console.log(`PASS: ${skills.length} skills, package documentation, standalone references, template integrity, token fixtures, generation determinism, and positive/negative audits`);
 }
 
 function readJsonOrThrow(file) {
