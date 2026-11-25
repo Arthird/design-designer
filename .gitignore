@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Generated or temporary local output
+*.tmp
+*.temp
+*.log
+.DS_Store
+coverage/
+.cache/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+
+# Editor and OS state
+.idea/
+.vscode/
+*.swp
+
+# Generated CSS is committed as deterministic project output. Do not ignore it.
