@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design Designer"
+  short_description: "Orchestrate project design systems end to end"
+  default_prompt: "Use $design-designer to create or extend this project design system."
