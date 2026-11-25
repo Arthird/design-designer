@@ -1,0 +1,4 @@
+interface:
+  display_name: "Token Writer"
+  short_description: "Create and validate project design tokens"
+  default_prompt: "Use $token-writer to create or update design-tokens.json for this project."
