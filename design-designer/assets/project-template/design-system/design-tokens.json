@@ -1,0 +1,160 @@
+{
+  "color": {
+    "$type": "color",
+    "$description": "Semantic color roles for a light web surface.",
+    "text": {
+      "primary": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0.102, 0.122, 0.169]
+        },
+        "$description": "Default body and high-emphasis text."
+      },
+      "on-accent": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [1, 1, 1]
+        },
+        "$description": "Text/icons placed on the primary accent surface."
+      }
+    },
+    "surface": {
+      "default": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0.969, 0.976, 0.992]
+        }
+      },
+      "raised": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [1, 1, 1]
+        }
+      }
+    },
+    "accent": {
+      "default": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0.075, 0.365, 0.925]
+        }
+      },
+      "hover": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [0.031, 0.282, 0.776]
+        }
+      }
+    },
+    "focus": {
+      "$value": {
+        "colorSpace": "srgb",
+        "components": [0.071, 0.122, 0.169]
+      },
+      "$description": "High-contrast focus ring against light surfaces."
+    }
+  },
+  "space": {
+    "$type": "dimension",
+    "inline": {
+      "md": { "$value": { "value": 0.75, "unit": "rem" } }
+    },
+    "stack": {
+      "sm": { "$value": { "value": 0.5, "unit": "rem" } },
+      "lg": { "$value": { "value": 1.5, "unit": "rem" } }
+    },
+    "page": {
+      "inline": { "$value": { "value": 2, "unit": "rem" } }
+    }
+  },
+  "radius": {
+    "$type": "dimension",
+    "md": { "$value": { "value": 0.625, "unit": "rem" } },
+    "full": { "$value": { "value": 9999, "unit": "px" } }
+  },
+  "size": {
+    "$type": "dimension",
+    "control": {
+      "min-block": { "$value": { "value": 2.75, "unit": "rem" } }
+    }
+  },
+  "border": {
+    "$type": "border",
+    "default": {
+      "$value": {
+        "color": "{color.surface.raised}",
+        "width": { "value": 1, "unit": "px" },
+        "style": "solid"
+      }
+    }
+  },
+  "shadow": {
+    "$type": "shadow",
+    "control": {
+      "$value": {
+        "color": {
+          "colorSpace": "srgb",
+          "components": [0.102, 0.122, 0.169],
+          "alpha": 0.12
+        },
+        "offsetX": { "value": 0, "unit": "px" },
+        "offsetY": { "value": 1, "unit": "px" },
+        "blur": { "value": 2, "unit": "px" },
+        "spread": { "value": 0, "unit": "px" }
+      }
+    }
+  },
+  "motion": {
+    "$type": "transition",
+    "control": {
+      "$value": {
+        "duration": "{motion.duration.fast}",
+        "delay": { "value": 0, "unit": "ms" },
+        "timingFunction": "{motion.easing.standard}"
+      }
+    },
+    "duration": {
+      "$type": "duration",
+      "fast": { "$value": { "value": 140, "unit": "ms" } },
+      "slow": { "$value": { "value": 260, "unit": "ms" } }
+    },
+    "easing": {
+      "$type": "cubicBezier",
+      "standard": { "$value": [0.2, 0, 0, 1] }
+    }
+  },
+  "font": {
+    "family": {
+      "$type": "fontFamily",
+      "sans": {
+        "$value": ["Inter", "ui-sans-serif", "system-ui", "sans-serif"]
+      }
+    },
+    "weight": {
+      "$type": "fontWeight",
+      "regular": { "$value": 400 },
+      "semi-bold": { "$value": 600 }
+    }
+  },
+  "typography": {
+    "$type": "typography",
+    "body": {
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": { "value": 1, "unit": "rem" },
+        "fontWeight": "{font.weight.regular}",
+        "letterSpacing": { "value": 0, "unit": "px" },
+        "lineHeight": 1.5
+      }
+    },
+    "heading": {
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": { "value": 1.5, "unit": "rem" },
+        "fontWeight": "{font.weight.semi-bold}",
+        "letterSpacing": { "value": -0.01, "unit": "rem" },
+        "lineHeight": 1.25
+      }
+    }
+  }
+}

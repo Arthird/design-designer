@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "scripts": {
+    "generate": "node generate-css.js",
+    "validate": "node validate-tokens.js",
+    "verify": "node validate-tokens.js && node generate-css.js"
+  }
+}

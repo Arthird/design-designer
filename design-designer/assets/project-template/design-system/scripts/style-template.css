@@ -1,0 +1,54 @@
+/* Add project-wide structural base CSS here when it cannot be expressed by token custom properties. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  background: var(--color-surface-default);
+  color: var(--color-text-primary);
+  font-family: var(--typography-body-font-family);
+  font-size: var(--typography-body-font-size);
+  font-weight: var(--typography-body-font-weight);
+  letter-spacing: var(--typography-body-letter-spacing);
+  line-height: var(--typography-body-line-height);
+}
+
+.preview {
+  display: grid;
+  gap: var(--space-stack-lg);
+  padding: var(--space-page-inline);
+}
+
+.preview__header {
+  margin: 0;
+  font-family: var(--typography-heading-font-family);
+  font-size: var(--typography-heading-font-size);
+  font-weight: var(--typography-heading-font-weight);
+  letter-spacing: var(--typography-heading-letter-spacing);
+  line-height: var(--typography-heading-line-height);
+}
+
+.preview__canvas {
+  align-items: start;
+  background: var(--color-surface-raised);
+  border: var(--border-default);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-inline-md);
+  padding: var(--space-stack-lg);
+}
+
+@media (forced-colors: active) {
+  .preview__canvas {
+    border-color: CanvasText;
+  }
+}

@@ -1,0 +1,125 @@
+.button {
+  align-items: center;
+  background: var(--color-accent-default);
+  border: 1px solid var(--color-accent-default);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-control);
+  color: var(--color-text-on-accent);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-weight: var(--font-weight-semi-bold);
+  gap: var(--space-stack-sm);
+  justify-content: center;
+  min-block-size: var(--size-control-min-block);
+  padding-inline: var(--space-inline-md);
+  text-align: center;
+  text-decoration: none;
+  transition: var(--motion-control);
+}
+
+.button:hover {
+  background: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+}
+
+.button:focus-visible {
+  /* Native disabled buttons are not focusable; do not add a contradictory disabled focus state. */
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.button:active {
+  transform: translateY(1px);
+}
+
+.button--secondary {
+  background: var(--color-surface-raised);
+  border-color: var(--color-focus);
+  color: var(--color-text-primary);
+}
+
+.button--secondary:hover {
+  background: var(--color-surface-default);
+  border-color: var(--color-focus);
+}
+
+.button:disabled,
+.button--disabled {
+  background: var(--color-surface-default);
+  border-color: var(--color-text-primary);
+  box-shadow: none;
+  color: var(--color-text-primary);
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+.button--disabled:hover,
+.button:disabled:hover {
+  background: var(--color-surface-default);
+  border-color: var(--color-text-primary);
+}
+
+.button__icon {
+  block-size: 1rem;
+  flex: none;
+  inline-size: 1rem;
+}
+
+.button--loading {
+  cursor: progress;
+}
+
+.button__spinner {
+  animation: button-spin var(--motion-duration-slow) linear infinite;
+  block-size: 1rem;
+  border: 2px solid currentColor;
+  border-inline-end-color: transparent;
+  border-radius: var(--radius-full);
+  flex: none;
+  inline-size: 1rem;
+}
+
+@keyframes button-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+@media (hover: hover) {
+  .button:hover {
+    background: var(--color-accent-hover);
+    border-color: var(--color-accent-hover);
+  }
+
+  .button--secondary:hover {
+    background: var(--color-surface-default);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+  }
+
+  .button__spinner {
+    animation: none;
+    border-inline-end-color: currentColor;
+  }
+}
+
+@media (forced-colors: active) {
+  .button {
+    border-color: ButtonText;
+    forced-color-adjust: auto;
+  }
+
+  .button:focus-visible {
+    outline-color: Highlight;
+  }
+
+  .button__spinner {
+    border-color: ButtonText;
+    border-inline-end-color: transparent;
+  }
+}

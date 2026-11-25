@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Button loading state</title>
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="./component.css">
+  </head>
+  <body>
+    <main class="preview">
+      <h1 class="preview__header">Button: loading</h1>
+      <div class="preview__canvas">
+        <!-- TODO: Production behavior must set busy state, prevent duplicate actions, and report completion or failure. -->
+        <button class="button button--loading" type="button" aria-busy="true">
+          <span class="button__spinner" aria-hidden="true"></span>
+          Saving…
+        </button>
+      </div>
+    </main>
+  </body>
+</html>
