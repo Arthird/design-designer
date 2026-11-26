@@ -35,14 +35,20 @@ npx skills@latest add Arthird/design-designer@v2.0.1 --list
 The template is not part of the Skills CLI installation. Use Giget to extract it from the same release as the installed skills:
 
 ```bash
-npx giget@latest gh:Arthird/design-designer/templates/project-template#v2.0.1 designed-design
+npx giget@latest gh:Arthird/design-designer/templates#v2.0.1 designed-design
 ```
 
-The destination remains `designed-design`. Keep the template tag aligned with the skills release. The `v2.0.1` skills must be paired with the `v2.0.1` template.
+The destination remains `designed-design`, and the project starter is kept in `designed-design/project-template` so its role is explicit. Keep the template tag aligned with the skills release. The `v2.0.1` skills must be paired with the `v2.0.1` template.
 
 ### Step 3 — start working
 
-Open `designed-design` as the project you want to design and invoke the workflow:
+Open `designed-design/project-template` as the project root and invoke the workflow from that directory:
+
+```bash
+cd designed-design/project-template
+```
+
+Do not invoke the workflow from the parent `designed-design` wrapper or from the repository root. The generated `design-system/` directory belongs inside the selected project root; otherwise it is created outside the starter directory.
 
 ```text
 Use $design-designer to inspect this project and guide it through requirements, design rules, tokens, component specifications, CSS-only visual prototypes, exceptions, audits, and project changelog.
@@ -89,24 +95,24 @@ To evaluate template changes, extract the desired release into a new directory a
 
 ### Working skills
 
-| Skill | Responsibility |
-|---|---|
+| Skill             | Responsibility                                                                                                                             |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | `design-designer` | Orchestrates discovery, knowledge checkpoints, rules, component registry, exceptions, planning, delegation, audits, and project changelog. |
-| `design-coder` | Creates static HTML/CSS visual prototypes from approved specifications without JavaScript or application behavior. |
-| `design-auditor` | Performs expert design-system audits and distinguishes confirmed violations, potential issues, recommendations, and unverifiable claims. |
-| `token-writer` | Creates or repairs `design-tokens.json` and runs deterministic validation/CSS generation using project tools. |
+| `design-coder`    | Creates static HTML/CSS visual prototypes from approved specifications without JavaScript or application behavior.                         |
+| `design-auditor`  | Performs expert design-system audits and distinguishes confirmed violations, potential issues, recommendations, and unverifiable claims.   |
+| `token-writer`    | Creates or repairs `design-tokens.json` and runs deterministic validation/CSS generation using project tools.                              |
 
 ### Knowledge skills
 
-| Skill | Domain and primary source |
-|---|---|
-| `ux-design-intelligence` | UX and visual direction anchored in optional UI UX Pro Max, with explicit fallback rules. |
-| `design-tokens-standard` | DTCG Design Tokens Format Module 2025.10 and deterministic transformation guidance. |
-| `web-accessibility` | WCAG 2.2 and WAI-ARIA Authoring Practices. |
-| `web-ui-foundations` | WHATWG HTML Living Standard, supported by MDN HTML/CSS documentation. |
-| `bem-components` | BEM methodology for component naming and scoped CSS. |
-| `apple-platform-guidance` | Apple Human Interface Guidelines for confirmed Apple targets. |
-| `material-platform-guidance` | Material Design 3 for confirmed Material targets. |
+| Skill                        | Domain and primary source                                                                 |
+| ---------------------------- | ----------------------------------------------------------------------------------------- |
+| `ux-design-intelligence`     | UX and visual direction anchored in optional UI UX Pro Max, with explicit fallback rules. |
+| `design-tokens-standard`     | DTCG Design Tokens Format Module 2025.10 and deterministic transformation guidance.       |
+| `web-accessibility`          | WCAG 2.2 and WAI-ARIA Authoring Practices.                                                |
+| `web-ui-foundations`         | WHATWG HTML Living Standard, supported by MDN HTML/CSS documentation.                     |
+| `bem-components`             | BEM methodology for component naming and scoped CSS.                                      |
+| `apple-platform-guidance`    | Apple Human Interface Guidelines for confirmed Apple targets.                             |
+| `material-platform-guidance` | Material Design 3 for confirmed Material targets.                                         |
 
 Each knowledge skill records its primary source, official URL, revision, last-checked date, and review trigger locally. There is no central source catalog.
 

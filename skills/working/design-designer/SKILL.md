@@ -49,6 +49,8 @@ Preserve the phase order while allowing earlier decisions to be revisited. Do no
 
 Inspect repository structure, documentation, configuration, existing tokens, components, styles, platform indicators, and design-system artifacts. Record facts that answer later questions. Never ask for information already available in the files or conversation.
 
+Determine the project root before creating artifacts. If the current directory contains the project starter in `project-template/` but no application project at its own level, use `project-template/` as the project root. Create `design-system/` only inside that selected project root, never in its parent or in the repository that contains the skills. If the intended project root is ambiguous, ask rather than infer it from an enclosing directory.
+
 ### Phase 1: establish requirements
 
 Determine the missing elements of platforms, technology, product purpose, audience, constraints, existing conventions, and visual direction. Confirm actual target platforms. If an Apple target is confirmed, discover `apple-platform-guidance`; if a Material target is confirmed, discover `material-platform-guidance`. Record assumptions separately from confirmed decisions.

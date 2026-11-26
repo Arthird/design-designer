@@ -11,6 +11,8 @@ This repository has no automated test framework. Verify the skills through focus
 5. Invoke each knowledge skill directly and confirm it returns criteria or decisions rather than executing changes.
 6. Exercise optional-integration absence and a token conflict; verify explicit fallback and risk recording.
 7. Run `npx skills@latest update -p -y` and verify it updates at the recorded source/ref. Separately verify that moving to a new release uses an explicit pinned installation.
+8. Extract the template with the documented Giget command and confirm it creates `designed-design/project-template`, not a project-named copy directly under `designed-design`.
+9. Invoke `design-designer` from the wrapper and confirm it either asks for the intended project root or selects `designed-design/project-template`; verify `design-system/` is created only below that starter, never beside it.
 
 ## Orchestrator dependency and checkpoint checks
 

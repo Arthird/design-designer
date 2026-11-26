@@ -31,8 +31,10 @@ Use `-g` instead of `-p` for global scope when appropriate. The release tag dete
 The project template must come from the same release as the skills:
 
 ```bash
-npx giget@latest gh:Arthird/design-designer/templates/project-template#v2.0.1 designed-design
+npx giget@latest gh:Arthird/design-designer/templates#v2.0.1 designed-design
 ```
+
+The destination name identifies the wrapper, while the extracted project starter remains at `designed-design/project-template`. Run `design-designer` with that starter as the project root so generated artifacts are placed in `designed-design/project-template/design-system`.
 
 The Skills CLI records the requested release ref and resolved commit in `skills-lock.json`. Giget has no comparable lock, so record or verify the template source tag when maintaining a project.
 
