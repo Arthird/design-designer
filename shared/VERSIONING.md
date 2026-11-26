@@ -4,6 +4,14 @@
 
 The repository uses semantic versions in Git tags and GitHub releases. The current architecture is version 2.0.0 because it reorganized installable skills, separated working and knowledge domains, and changed installation to the Skills CLI.
 
+The published `v2.0.0` annotated tag points at the architecture refactor commit. A pinned install can be reproduced with:
+
+```bash
+npx skills@latest add Arthird/design-designer@v2.0.0 --skill design-designer --skill web-accessibility -a codex
+```
+
+The Skills CLI records both the requested `ref` and resolved commit in `skills-lock.json`.
+
 Do not add version metadata to every skill. The repository release is the compatibility unit. Published tags and release notes are the authoritative package history; there is no root changelog.
 
 ## Individual skills
