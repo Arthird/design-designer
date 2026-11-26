@@ -4,8 +4,8 @@ This repository has no automated test framework. Verify the skills through focus
 
 ## Standard verification sequence
 
-1. Run `npx skills@latest add Arthird/design-designer@v2.0.1 --list` and confirm the working and knowledge skills are discoverable.
-2. Install the complete set into a temporary project with `npx skills@latest add Arthird/design-designer@v2.0.1 --skill '*' -a codex -y`.
+1. Run `npx skills@latest add Arthird/design-designer@v2.0.2 --list` and confirm the working and knowledge skills are discoverable.
+2. Install the complete set into a temporary project with `npx skills@latest add Arthird/design-designer@v2.0.2 --skill '*' -a codex -y`.
 3. Invoke the orchestrator in a realistic project request and confirm it inspects first, then invokes dependencies at their documented checkpoints.
 4. Invoke each working skill directly and confirm it asks only for missing context and remains within its scope.
 5. Invoke each knowledge skill directly and confirm it returns criteria or decisions rather than executing changes.
