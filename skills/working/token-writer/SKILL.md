@@ -11,6 +11,8 @@ Own `design-system/design-tokens.json`. Produce valid, maintainable tokens that 
 
 Respond in the language the user uses. Keep token descriptions and artifact headings in English unless the project has another documentation language.
 
+For contributor-level acceptance checks, use the canonical [manual verification guide](https://github.com/Arthird/design-designer/blob/master/shared/workflow/manual-verification.md).
+
 ## Dependencies and checkpoints
 
 | Dependency | Type | Checkpoint and trigger | Mandatory? | If unavailable |

@@ -21,7 +21,7 @@ Source and update details are in [references/source-metadata.md](references/sour
 
 ## When to use
 
-Use after confirming an Apple platform, OS minimum versions, device classes, input methods, and framework. Use for navigation, controls, typography, appearance, safe areas, gestures, adaptation, privacy, and platform integration decisions.
+Use after confirming an Apple platform, OS minimum versions, device classes, input methods, and framework. Use for navigation, controls, typography, appearance, safe areas, gestures, adaptation, privacy, and platform integration decisions. This skill does not replace `web-accessibility`: use WCAG 2.2 and APG as a baseline, then separately evaluate Apple accessibility APIs and VoiceOver behavior in the native context.
 
 Do not use for a web-only project even if it mimics Apple style, and do not use it to override applicable accessibility or security requirements.
 
@@ -43,6 +43,7 @@ Do not use for a web-only project even if it mimics Apple style, and do not use 
 - Platform-specific features are not appended to unrelated web rules.
 - Accessibility and privacy risks are explicit.
 - Untested native interactions are labeled unverified.
+- Native accessibility is not treated as covered by a web audit; VoiceOver and platform API behavior remain separate verification.
 
 ## Output contract
 

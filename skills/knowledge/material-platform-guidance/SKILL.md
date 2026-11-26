@@ -21,7 +21,7 @@ Source and update details are in [references/source-metadata.md](references/sour
 
 ## When to use
 
-Use after confirming Android or a Material-based interface, its framework, target versions, and adaptive-layout requirements. Use for Material component roles, color roles, typography, navigation, state behavior, motion, and responsive layout.
+Use after confirming Android or a Material-based interface, its framework, target versions, and adaptive-layout requirements. Use for Material component roles, color roles, typography, navigation, state behavior, motion, and responsive layout. This skill does not replace `web-accessibility`: use WCAG 2.2 and APG as a baseline, then separately evaluate Android accessibility APIs and TalkBack behavior in the native context.
 
 Do not use for a generic web design unless Material is an explicit product decision, and do not use it to override applicable accessibility requirements.
 
@@ -43,6 +43,7 @@ Do not use for a generic web design unless Material is an explicit product decis
 - Interaction, touch, motion, and state behavior are coherent.
 - Platform behavior is not confused with universal web behavior.
 - Native runtime and assistive-technology checks remain explicit.
+- Native accessibility is not treated as covered by a web audit; TalkBack and platform API behavior remain separate verification.
 
 ## Output contract
 

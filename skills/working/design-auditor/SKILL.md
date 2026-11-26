@@ -11,11 +11,13 @@ Review a design system against its approved rules, implementation evidence, and 
 
 Respond in the language the user uses. Keep report headings and file paths in English unless the project uses another report language.
 
+For contributor-level acceptance checks, use the canonical [manual verification guide](https://github.com/Arthird/design-designer/blob/master/shared/workflow/manual-verification.md).
+
 ## Dependencies and checkpoints
 
 | Dependency | Type | Checkpoint and trigger | Mandatory? | If unavailable |
 |---|---|---|---|---|
-| `web-accessibility` | knowledge | Before assessing web contrast, semantics, focus, keyboard behavior, form/error handling, dynamic status, or accessibility claims. | Mandatory for web audits. | Mark those domains unverified; do not infer compliance from static markup. |
+| `web-accessibility` | knowledge | Before assessing contrast, semantics, focus, keyboard behavior, form/error handling, dynamic status, or accessibility claims. Use WCAG 2.2 and APG as the mandatory baseline for web and native projects. | Mandatory for accessibility audits. | Mark those domains unverified; do not infer compliance from static markup or platform guidance. |
 | `web-ui-foundations` | knowledge | Before reviewing HTML semantics, CSS mechanisms, responsiveness, state representation, or generated custom-property use. | Mandatory for web audits. | Limit findings to evidence from documented project rules and mark implementation review incomplete. |
 | `bem-components` | knowledge | Before reviewing component naming, selector scope, variant composition, or CSS architecture where BEM is required. | Mandatory when BEM is the project convention. | Evaluate against the documented naming convention instead, or mark this dimension unverified. |
 | `design-tokens-standard` | knowledge | Before deciding token structure/type/reference validity, deprecation risk, or transformation support. | Mandatory for token audits. | Use an existing project validator only as limited mechanical evidence and report the missing knowledge authority. |
@@ -75,13 +77,15 @@ Inspect each component's specification, state table, HTML, CSS, and registry row
 
 ### 5. Evaluate accessibility and platform behavior
 
-Apply `web-accessibility` and the one applicable Apple or Material knowledge skill. Differentiate:
+Apply `web-accessibility` as the mandatory WCAG 2.2 and APG foundation for every accessibility audit. On native projects, use relevant criteria as a baseline, but explicitly require separate evaluation of platform accessibility APIs, native semantics, focus and reading order, announcements, target sizes, scaling, gestures, and assistive technologies such as VoiceOver and TalkBack. Platform guidance skills describe platform UI conventions; they do not certify native accessibility.
+
+Differentiate:
 
 - statically confirmed defects, such as a control with no accessible text or an invalid ARIA relationship;
 - potential issues that need runtime verification, such as focus order or announcement behavior;
 - compliance gaps that cannot be verified from the available materials.
 
-Never say a static prototype is keyboard or screen-reader accessible merely because CSS contains a focus selector.
+Never say a static prototype is keyboard or screen-reader accessible merely because CSS contains a focus selector. Never describe a web-based audit alone as complete native accessibility coverage or certification.
 
 ### 6. Evaluate UX and visual quality
 
@@ -95,7 +99,7 @@ If the project supplies a token validator, generator, contrast helper, or audit 
 - an unavailable or failed execution is unverified or a tooling issue, never automatic compliance;
 - a script cannot judge design intent, context, visual coherence, or runtime interaction.
 
-The reusable tool is in the demo/project template scripts, not inside the skill. Never make the audit dependent on that optional code.
+The demo-only audit helper is `demo/design-system/scripts/audit-design-system.js` in the source repository. It exists to inspect the demo's static artifacts and demonstrate mechanical evidence; it is deliberately not part of `templates/project-template/design-system/scripts/` and is not required for expert auditing. Never make the audit dependent on that optional code.
 
 ## Finding classification
 

@@ -11,6 +11,8 @@ Produce a static visual prototype that demonstrates approved component design in
 
 Respond in the language the user uses. Keep code, comments, headings, and TODOs in English unless the enclosing project has another documentation language.
 
+For contributor-level acceptance checks, use the canonical [manual verification guide](https://github.com/Arthird/design-designer/blob/master/shared/workflow/manual-verification.md).
+
 ## Dependencies and checkpoints
 
 Inspect skills by exact name before relying on them. Knowledge skills set rules; they do not edit files. Do not invoke the orchestrator or another working skill just to obtain knowledge.

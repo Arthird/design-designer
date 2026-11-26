@@ -12,6 +12,21 @@ This repository has no automated test framework. Verify the skills through focus
 6. Exercise optional-integration absence and a token conflict; verify explicit fallback and risk recording.
 7. Update the installed skills and verify the source and selected scope remain as documented.
 
+## Orchestrator dependency and checkpoint checks
+
+These checks are distinct to the `design-designer` coordinator:
+
+- Confirm `ux-design-intelligence`, `design-tokens-standard`, and every relevant web or platform knowledge skill are discoverable before the phase that needs them.
+- Confirm optional `ui-ux-pro-max` is inspected by exact name only when present.
+- Confirm the orchestrator does not claim a knowledge source was used when it is absent or was not consulted.
+- In a disposable React workspace, ask for a responsive dashboard design system and verify project inspection, web requirements, direction/rules gates, and stage-appropriate delegation to `token-writer`, `design-coder`, and `design-auditor`.
+- Confirm no JavaScript or production behavior appears in visual examples.
+- In an iOS workspace, verify the orchestrator selects `apple-platform-guidance` after confirming the target, does not impose web HTML/CSS behavior on native interaction, and keeps native runtime verification explicit.
+- Remove an optional knowledge skill and confirm the explicit fallback or incomplete-review report.
+- Make a token standard or tool unavailable and confirm token authoring stops rather than inventing syntax.
+- Record an accessibility-conflicting user decision and confirm it is documented in `exceptions.md` rather than called compliant.
+- Omit a component specification and confirm prototyping does not proceed using fabricated requirements.
+
 ## Workflow scenarios
 
 ### New web design system
@@ -29,6 +44,8 @@ Given an existing React project with no design-system directory, ask for a respo
 ### Native platform
 
 Given an iOS project and no web UI, ask for a component system. Confirm that the orchestrator selects `apple-platform-guidance`, does not impose HTML/CSS rules, and leaves runtime verification unresolved where static artifacts cannot prove it.
+
+For native accessibility, confirm that the workflow uses WCAG 2.2 and APG as a baseline, then requires separate evaluation of platform accessibility APIs, semantics, focus/reading order, announcements, target sizes, scaling, gestures, and VoiceOver/TalkBack behavior. A web-oriented audit must not be described as complete native accessibility coverage or certification.
 
 ### Existing design system
 

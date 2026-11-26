@@ -2,110 +2,107 @@
 
 An installable Codex skill ecosystem for designing, documenting, validating, and visually prototyping a project-specific design system.
 
-The repository separates **working skills**, which execute tasks, from **knowledge skills**, which supply authoritative domain rules and decision criteria. The result can be installed as a complete group, as selected working or knowledge groups, or as individual skills.
+The repository separates **working skills**, which execute tasks, from **knowledge skills**, which provide authoritative domain rules and decision criteria. Skills from one release form a compatible set. The project template is distributed separately and should be obtained from the same release.
 
-## Install with Skills CLI
+## Setup
 
-The supported installation interface is [`npx skills@latest add`](https://github.com/vercel-labs/skills). Current CLI version at documentation time is **1.9.0**; Node.js **22.20 or newer** is required for the CLI. Use `npx skills@latest --help` to inspect the installed version's options.
+### Step 1 — install the skills
 
-Run these commands from the project where you want the skills available. Omitting `-g` installs at project scope. Add `-g` for user-global installation. The CLI detects Codex and installs under its `.agents/skills/` convention; use `-a codex` to make Codex explicit.
+Use the [Skills CLI](https://github.com/vercel-labs/skills) to install the working skills from the repository:
 
-### Browse without installing
+```bash
+npx skills@latest add Arthird/design-designer
+```
+
+The CLI is interactive by default and lets you choose the skills and target agents. For a non-interactive Codex install of the complete compatible `v2.0.0` set:
+
+```bash
+npx skills@latest add Arthird/design-designer@v2.0.0 --skill '*' -a codex -y
+```
+
+Browse available skills without installing:
 
 ```bash
 npx skills@latest add Arthird/design-designer --list
 ```
 
-### Install all skills
+Use `-g` for a user-global installation. Omit it for project-level installation. Codex project skills are installed under `.agents/skills/`.
+
+### Step 2 — obtain the project template
+
+The template is not part of the Skills CLI installation. Use Giget to extract it from the same release as the installed skills:
 
 ```bash
-npx skills@latest add Arthird/design-designer --all
+npx giget@latest gh:Arthird/design-designer/templates/project-template#v2.0.0 designed-design
 ```
 
-For a non-interactive install to Codex only:
+The destination remains `designed-design`. Keep the template tag aligned with the skills release. For example, `v2.0.0` skills should be paired with the `v2.0.0` template.
+
+### Step 3 — start working
+
+Open `designed-design` as the project you want to design and invoke the workflow:
+
+```text
+Use $design-designer to inspect this project and guide it through requirements, design rules, tokens, component specifications, CSS-only visual prototypes, exceptions, audits, and project changelog.
+```
+
+Working skills can also be invoked directly:
+
+```text
+Use $token-writer to update semantic tokens and regenerate the project CSS.
+Use $design-coder to prototype the approved input states in semantic HTML and scoped BEM CSS.
+Use $design-auditor to audit the current design system without changing the baseline.
+```
+
+Domain knowledge skills can be invoked for a decision framework without changing project artifacts:
+
+```text
+Use $web-accessibility to evaluate this proposed focus and error-state design.
+Use $design-tokens-standard to review this token structure before we edit the source.
+```
+
+### Step 4 — updating
+
+Obtaining a template into a new directory is **not** an update workflow. Do not extract a new template over an existing project or overwrite local work.
+
+Update the installed skills as a complete release set:
 
 ```bash
-npx skills@latest add Arthird/design-designer --skill '*' -a codex -y
+npx skills@latest update -p -y
 ```
 
-`--all` targets all detected agents. When only Codex is wanted, prefer the explicit `--skill '*' -a codex -y` form.
+Use `-g` instead of `-p` for user-global installations. The repository policy is to keep all skills from one compatible release rather than mixing independently updated versions.
 
-### Install individual skills
-
-```bash
-npx skills@latest add Arthird/design-designer --skill design-designer -a codex
-npx skills@latest add Arthird/design-designer --skill token-writer -a codex
-npx skills@latest add Arthird/design-designer --skill web-accessibility -a codex
-```
-
-### Install selected groups
-
-Install the working-skill group:
-
-```bash
-npx skills@latest add Arthird/design-designer \
-  --skill design-designer \
-  --skill design-coder \
-  --skill design-auditor \
-  --skill token-writer \
-  -a codex
-```
-
-Install the knowledge-skill group:
-
-```bash
-npx skills@latest add Arthird/design-designer \
-  --skill ux-design-intelligence \
-  --skill design-tokens-standard \
-  --skill web-accessibility \
-  --skill web-ui-foundations \
-  --skill bem-components \
-  --skill apple-platform-guidance \
-  --skill material-platform-guidance \
-  -a codex
-```
-
-The CLI supports repeated `--skill` flags, `--skill '*'`, project/global scopes, agent targeting, `--copy` for copy-based installs, and `--full-depth` for searching outside standard skill containers. See the [official CLI reference](https://github.com/vercel-labs/skills/blob/main/docs/commands.md) for the complete option set.
-
-## Updating and removing
-
-Update all installed skills, or one by name:
-
-```bash
-npx skills@latest update
-npx skills@latest update design-designer
-```
-
-Use `-g` to target global installations or `-p` to target project installations. List installed skills with `npx skills@latest list`; remove with `npx skills@latest remove <skill>`. GitHub-source installations are tracked in `skills-lock.json` and can be checked/updated. Local-directory test installs are useful for validation but the CLI does not track them for `skills update`; install from `Arthird/design-designer` for normal updateable use.
+To evaluate template changes, extract the desired release into a new directory and compare it with the existing project. Preserve project-specific rules, tokens, components, exceptions, and other local modifications, then merge only the reviewed changes deliberately.
 
 ## Skills
 
 ### Working skills
 
-| Skill | Task |
+| Skill | Responsibility |
 |---|---|
-| `design-designer` | Orchestrates requirements, knowledge checkpoints, rules, component registry, exceptions, planning, delegation, audits, and project changelog. |
-| `design-coder` | Builds static HTML/CSS visual prototypes from approved specifications without JavaScript or application behavior. |
-| `design-auditor` | Performs substantive expert audits and classifies confirmed violations, potential issues, recommendations, and unverifiable claims. |
-| `token-writer` | Creates or repairs `design-tokens.json` and runs deterministic validation/CSS generation through project tools. |
+| `design-designer` | Orchestrates discovery, knowledge checkpoints, rules, component registry, exceptions, planning, delegation, audits, and project changelog. |
+| `design-coder` | Creates static HTML/CSS visual prototypes from approved specifications without JavaScript or application behavior. |
+| `design-auditor` | Performs expert design-system audits and distinguishes confirmed violations, potential issues, recommendations, and unverifiable claims. |
+| `token-writer` | Creates or repairs `design-tokens.json` and runs deterministic validation/CSS generation using project tools. |
 
 ### Knowledge skills
 
 | Skill | Domain and primary source |
 |---|---|
-| `ux-design-intelligence` | UX and visual direction anchored in optional UI UX Pro Max, with explicit general fallback rules. |
+| `ux-design-intelligence` | UX and visual direction anchored in optional UI UX Pro Max, with explicit fallback rules. |
 | `design-tokens-standard` | DTCG Design Tokens Format Module 2025.10 and deterministic transformation guidance. |
-| `web-accessibility` | WCAG 2.2, with WAI-ARIA Authoring Practices for interaction patterns. |
-| `web-ui-foundations` | WHATWG HTML Living Standard, supported by MDN CSS/HTML documentation. |
-| `bem-components` | BEM methodology for naming and component-local CSS architecture. |
-| `apple-platform-guidance` | Apple Human Interface Guidelines, selected only for a confirmed Apple target. |
-| `material-platform-guidance` | Material Design 3, selected only for a confirmed Material target. |
+| `web-accessibility` | WCAG 2.2 and WAI-ARIA Authoring Practices. |
+| `web-ui-foundations` | WHATWG HTML Living Standard, supported by MDN HTML/CSS documentation. |
+| `bem-components` | BEM methodology for component naming and scoped CSS. |
+| `apple-platform-guidance` | Apple Human Interface Guidelines for confirmed Apple targets. |
+| `material-platform-guidance` | Material Design 3 for confirmed Material targets. |
 
-Each knowledge skill documents its primary source, official URL, revision, and last-checked date, plus a practical freshness procedure in its own directory. There is intentionally no central source catalog.
+Each knowledge skill records its primary source, official URL, revision, last-checked date, and review trigger locally. There is no central source catalog.
 
-## Architecture and dependencies
+## Dependencies and checkpoints
 
-Working skills consult knowledge at explicit workflow checkpoints. The orchestrator discovers and delegates in this order:
+Working skills consult knowledge at explicit checkpoints. The orchestrator sequence is:
 
 ```text
 design-designer
@@ -121,9 +118,15 @@ design-designer
   -> design-auditor
 ```
 
-The full checkpoint/failure table is in [design-designer's `SKILL.md`](skills/working/design-designer/SKILL.md). Each working skill also contains its own dependencies, triggers, and fallback behavior so it can be installed and used independently. The dependency graph is acyclic.
+The complete dependency, mandatory/optional, and fallback table is in [design-designer's `SKILL.md`](skills/working/design-designer/SKILL.md). Each working skill also declares its own checkpoints so it remains usable when invoked directly. The dependency graph is acyclic.
 
-`ui-ux-pro-max` is optional and external. The orchestrator must discover it by exact skill name, inspect its actual `SKILL.md` and relevant references, and use verified recommendations only. It must never copy, modify, redistribute, or imply use of the external skill. If unavailable, `ux-design-intelligence` supplies fallback criteria.
+`ui-ux-pro-max` is optional and external. Install it separately when desired:
+
+```bash
+npx skills@latest add nextlevelbuilder/ui-ux-pro-max-skill --skill ui-ux-pro-max -a codex
+```
+
+The orchestrator inspects its actual instructions before use, applies verified recommendations only, and continues with `ux-design-intelligence` fallback rules when it is unavailable. The external skill is never copied or modified.
 
 ## Repository structure
 
@@ -143,7 +146,7 @@ The full checkpoint/failure table is in [design-designer's `SKILL.md`](skills/wo
 │       ├── bem-components/
 │       ├── apple-platform-guidance/
 │       └── material-platform-guidance/
-├── shared/                      # Repository-level workflow and policies
+├── shared/                      # Repository workflow and policies
 │   ├── workflow/
 │   ├── VERSIONING.md
 │   └── SOURCE-FRESHNESS.md
@@ -154,78 +157,66 @@ The full checkpoint/failure table is in [design-designer's `SKILL.md`](skills/wo
 └── .gitignore
 ```
 
-Installable units are only the directories containing `SKILL.md`. Fixtures, templates, shared docs, and generated demo output are supporting materials and are not presented as skills.
+Only directories containing `SKILL.md` are installable skills. Shared documentation, templates, demos, and generated output are supporting materials.
 
-## Prerequisites
+## Design-system tools and demo
 
-- Codex with Skills CLI discovery/activation support.
-- Node.js 22.20 or newer for the Skills CLI.
-- Network access to GitHub and npm during installation and updates.
-- Node.js for project token validation/generation tools in generated project artifacts.
-- An optional separately installed `ui-ux-pro-max` skill for database-backed design intelligence.
-
-The design-system tools use Node.js built-ins. This repository introduces no third-party runtime package for token validation, CSS generation, token utilities, or contrast calculation.
-
-## Usage
-
-Invoke the workflow:
+The project template provides:
 
 ```text
-Use $design-designer to inspect this project and guide it through design-system rules, tokens, component specifications, CSS-only prototypes, audits, exceptions, and project changelog.
+design-system/scripts/
+├── validate-tokens.js
+├── generate-css.js
+├── token-utils.js
+├── contrast.js
+└── style-template.css
 ```
 
-Invoke focused working skills:
+The demo additionally contains `demo/design-system/scripts/audit-design-system.js`. That script is demonstration-only: it gathers mechanical evidence from the demo's static files and is intentionally not distributed in the project template. Expert review remains the responsibility of `design-auditor`, and the audit must not depend on the demo helper.
 
-```text
-Use $token-writer to update semantic tokens and regenerate the project CSS.
-Use $design-coder to prototype the approved input states in semantic HTML and scoped BEM CSS.
-Use $design-auditor to audit the current design system without changing the baseline.
+From a project containing `design-system/`:
+
+```bash
+node design-system/scripts/validate-tokens.js
+node design-system/scripts/generate-css.js
 ```
 
-Invoke domain knowledge directly when you need a decision framework rather than artifact changes:
+`style.css` is deterministic generated output and must not be hand-edited. Shared base styles belong in `scripts/style-template.css`. These are operational project tools, not automated testing infrastructure.
 
-```text
-Use $web-accessibility to evaluate this proposed focus and error-state design.
-Use $design-tokens-standard to review this token structure before we edit the source.
-```
+## Accessibility scope
 
-## Design-system demo and template
+WCAG 2.2 and WAI-ARIA Authoring Practices remain the mandatory accessibility foundation for web projects and the baseline for native-project review. Apple and Material platform guidance covers platform interface conventions, not accessibility certification.
 
-`demo/design-system/` demonstrates the output contract and can be inspected locally. Copy and merge the complete starter files from `templates/project-template/design-system/`, including its component example and scripts; do not overwrite an existing design system blindly.
+For native projects, WCAG/APG checks can reveal useful general issues, but native accessibility also requires separate evaluation of platform accessibility APIs, native semantics, focus and reading order, announcements, target sizes, scaling, gestures, and assistive technologies such as VoiceOver and TalkBack. A web-based audit is not complete native accessibility coverage or certification.
 
-The demo's operational scripts are:
+## Manual acceptance and verification
 
-```text
-scripts/validate-tokens.js      # Format and supported-reference validation
-scripts/generate-css.js         # Deterministic CSS custom-property generation
-scripts/token-utils.js          # Shared token resolution/validation helpers
-scripts/contrast.js             # Contrast calculation helper
-scripts/style-template.css      # Project base-style template
-```
+The repository intentionally has no automated test framework. Use the canonical [manual functional verification guide](shared/workflow/manual-verification.md) before release changes.
 
-They are project tools, not a test framework. No automated test runner, test fixture harness, or CI test matrix ships with the repository.
+Core manual checks include:
 
-## Manual acceptance
-
-Automated test infrastructure is intentionally absent. Before release changes, perform the manual functional checks in [shared/workflow/manual-verification.md](shared/workflow/manual-verification.md), including:
-
-- Skills CLI discovery;
-- all-skill, individual-skill, and selected-group installs;
+- Skills CLI discovery and complete-set installation;
 - Codex targeting and project/global scope;
-- updates and cleanup;
-- orchestrator delegation and dependency fallbacks;
+- complete-set updates;
+- Giget extraction from the matching release tag;
+- orchestrator dependency checkpoints and fallbacks;
 - direct invocation of each working and knowledge skill;
-- token validation/CSS generation and an audit with representative issues.
+- token validation, deterministic CSS generation, and an expert audit;
+- separation of static checks from runtime web and native accessibility verification.
 
-## Versioning and compatibility
+Before publication, also verify all skill manifests and local documentation links.
 
-Repository releases use semantic versions. Git history is the package history; there is intentionally no root changelog. See [shared/VERSIONING.md](shared/VERSIONING.md) for compatibility policy, skill-level change handling, and the release checklist. Knowledge freshness responsibilities are in [shared/SOURCE-FRESHNESS.md](shared/SOURCE-FRESHNESS.md).
+## Versioning
+
+Repository releases use semantic versions and form the compatibility unit. Use the complete skill set from one release and obtain the project template from that same tag. Do not mix independently updated skills or combine skills and templates from different releases.
+
+See [shared/VERSIONING.md](shared/VERSIONING.md) for the concise release policy and [shared/SOURCE-FRESHNESS.md](shared/SOURCE-FRESHNESS.md) for knowledge-source review. Git tags and release notes are the package history; the repository deliberately has no root changelog.
 
 ## Scope and limitations
 
-This ecosystem creates design specifications, tokens, generated CSS, and static visual prototypes. It does not implement production JavaScript, application state, data loading, form submission, navigation, or platform-native functional components.
+This ecosystem produces specifications, tokens, generated CSS, and static visual prototypes. It does not implement production JavaScript, application state, data loading, form submission, navigation, or native functional components.
 
-Static artifacts cannot prove runtime keyboard behavior, assistive-technology operation, dynamic announcements, native device interaction, or production readiness. Report those checks as manual or unverifiable.
+Static artifacts cannot prove keyboard behavior, screen-reader or VoiceOver/TalkBack behavior, dynamic announcements, native device interaction, or production readiness. Report those as manual or unverifiable.
 
 ## License
 

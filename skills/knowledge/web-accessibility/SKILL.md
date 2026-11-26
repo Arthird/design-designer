@@ -23,7 +23,7 @@ Source and update details are in [references/source-metadata.md](references/sour
 
 ## When to use
 
-Use when a web interface has text, controls, forms, navigation, data displays, focus management, motion, or dynamic status. Use at design review, component specification, prototype audit, and final review.
+Use when a web interface has text, controls, forms, navigation, data displays, focus management, motion, or dynamic status. Use at design review, component specification, prototype audit, and final review. For native projects, WCAG 2.2 and APG can provide a useful baseline for general accessibility expectations, but they do not cover native platform APIs, VoiceOver/TalkBack behavior, or complete native accessibility certification.
 
 ## Evaluation algorithm
 
@@ -57,4 +57,4 @@ Use when a web interface has text, controls, forms, navigation, data displays, f
 
 ## Output contract
 
-Every accessibility finding includes location, criterion/pattern, observed evidence, severity, needed correction, and verification status. Never say automated checks guarantee accessibility.
+Every accessibility finding includes location, criterion/pattern, observed evidence, severity, needed correction, and verification status. Web checks do not establish complete native accessibility coverage. Never say automated checks guarantee accessibility.

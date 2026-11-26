@@ -11,7 +11,7 @@ Create or extend one coherent design system for the current project. Own discove
 
 Respond in the language the user uses. Keep skill instructions, artifact headings, and code comments in English unless the project has an established documentation language.
 
-Read [references/design-system-workflow.md](references/design-system-workflow.md) for artifact contracts, status values, review gates, and edge cases. This file travels with the installed skill.
+Read [references/design-system-workflow.md](references/design-system-workflow.md) for artifact contracts, status values, review gates, and edge cases. For contributor-level acceptance checks, use the canonical [manual verification guide](https://github.com/Arthird/design-designer/blob/master/shared/workflow/manual-verification.md); it is not an install-time runtime dependency.
 
 ## Dependencies and checkpoints
 
