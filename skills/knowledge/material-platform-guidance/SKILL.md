@@ -31,7 +31,7 @@ Do not use for a generic web design unless Material is an explicit product decis
 2. Identify the relevant Material component, layout, or system pattern.
 3. Map tokens to Material color and type roles deliberately; do not copy arbitrary hex or font values out of context.
 4. Define compact, medium, and expanded adaptive behavior where relevant.
-5. Check interaction states, motion, touch targets, text scaling, appearance modes, and accessibility implications; hand normative accessibility questions to `web-accessibility` only when the target is actually web, otherwise use project/platform accessibility criteria.
+5. Apply WCAG 2.2 as the mandatory accessibility baseline for general expectations. Use APG where web/ARIA interaction patterns are relevant, but do not treat APG widget implementations as native requirements. For Android/Material, separately evaluate native accessibility APIs, semantics, focus and reading order, announcements, touch targets, text scaling, gestures, and TalkBack behavior. A web-based audit does not provide complete native accessibility coverage or certification.
 6. Require runtime/device verification for dynamic interactions and platform system behavior.
 7. Record deviations and unresolved native validation in the project exceptions or implementation plan.
 

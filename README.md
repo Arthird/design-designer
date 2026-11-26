@@ -8,35 +8,37 @@ The repository separates **working skills**, which execute tasks, from **knowled
 
 ### Step 1 — install the skills
 
-Use the [Skills CLI](https://github.com/vercel-labs/skills) to install the working skills from the repository:
+Use the [Skills CLI](https://github.com/vercel-labs/skills) to install the complete compatible skill set from the `v2.0.1` release:
 
 ```bash
-npx skills@latest add Arthird/design-designer
+npx skills@latest add Arthird/design-designer@v2.0.1 --skill '*' -a codex -y
 ```
 
-The CLI is interactive by default and lets you choose the skills and target agents. For a non-interactive Codex install of the complete compatible `v2.0.0` set:
+The release tag determines which skills are installed. Use the complete set from one tag. Add `-g` for a user-global installation; otherwise the CLI installs project-local Codex skills under `.agents/skills/`.
+
+An interactive alternative is to omit `--skill`, `-a`, and `-y` after pinning the release source:
 
 ```bash
-npx skills@latest add Arthird/design-designer@v2.0.0 --skill '*' -a codex -y
+npx skills@latest add Arthird/design-designer@v2.0.1
 ```
+
+Select the complete skill set rather than mixing releases.
 
 Browse available skills without installing:
 
 ```bash
-npx skills@latest add Arthird/design-designer --list
+npx skills@latest add Arthird/design-designer@v2.0.1 --list
 ```
-
-Use `-g` for a user-global installation. Omit it for project-level installation. Codex project skills are installed under `.agents/skills/`.
 
 ### Step 2 — obtain the project template
 
 The template is not part of the Skills CLI installation. Use Giget to extract it from the same release as the installed skills:
 
 ```bash
-npx giget@latest gh:Arthird/design-designer/templates/project-template#v2.0.0 designed-design
+npx giget@latest gh:Arthird/design-designer/templates/project-template#v2.0.1 designed-design
 ```
 
-The destination remains `designed-design`. Keep the template tag aligned with the skills release. For example, `v2.0.0` skills should be paired with the `v2.0.0` template.
+The destination remains `designed-design`. Keep the template tag aligned with the skills release. The `v2.0.1` skills must be paired with the `v2.0.1` template.
 
 ### Step 3 — start working
 
@@ -65,13 +67,21 @@ Use $design-tokens-standard to review this token structure before we edit the so
 
 Obtaining a template into a new directory is **not** an update workflow. Do not extract a new template over an existing project or overwrite local work.
 
-Update the installed skills as a complete release set:
+The standard update command refreshes skills from the source and ref recorded at installation. It does **not** switch a `v2.0.0` installation to `v2.0.1`:
 
 ```bash
 npx skills@latest update -p -y
 ```
 
-Use `-g` instead of `-p` for user-global installations. The repository policy is to keep all skills from one compatible release rather than mixing independently updated versions.
+Use `-g` instead of `-p` for user-global installations. This command is suitable for receiving updates within the recorded source/ref; it is not the release-selection mechanism.
+
+To move to `v2.0.1`, explicitly install the complete set from that tag:
+
+```bash
+npx skills@latest add Arthird/design-designer@v2.0.1 --skill '*' -a codex -y
+```
+
+All skills in a release should come from the same tag. Reinstalling may overwrite installed skill copies, so preserve and review local skill modifications before replacing them. Do not update arbitrary individual skills independently.
 
 To evaluate template changes, extract the desired release into a new directory and compare it with the existing project. Preserve project-specific rules, tokens, components, exceptions, and other local modifications, then merge only the reviewed changes deliberately.
 
@@ -197,7 +207,7 @@ Core manual checks include:
 
 - Skills CLI discovery and complete-set installation;
 - Codex targeting and project/global scope;
-- complete-set updates;
+- recorded-source/ref updates and explicit moves to a new release;
 - Giget extraction from the matching release tag;
 - orchestrator dependency checkpoints and fallbacks;
 - direct invocation of each working and knowledge skill;
@@ -208,7 +218,7 @@ Before publication, also verify all skill manifests and local documentation link
 
 ## Versioning
 
-Repository releases use semantic versions and form the compatibility unit. Use the complete skill set from one release and obtain the project template from that same tag. Do not mix independently updated skills or combine skills and templates from different releases.
+Repository releases use semantic versions and form the compatibility unit. Use the complete skill set from one release and obtain the project template from that same tag. The current prepared release is `v2.0.1`. Do not mix independently updated skills or combine skills and templates from different releases.
 
 See [shared/VERSIONING.md](shared/VERSIONING.md) for the concise release policy and [shared/SOURCE-FRESHNESS.md](shared/SOURCE-FRESHNESS.md) for knowledge-source review. Git tags and release notes are the package history; the repository deliberately has no root changelog.
 

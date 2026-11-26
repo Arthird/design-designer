@@ -4,13 +4,13 @@ This repository has no automated test framework. Verify the skills through focus
 
 ## Standard verification sequence
 
-1. Run `npx skills add Arthird/design-designer --list` and confirm the working and knowledge skills are discoverable.
-2. Install all skills into a temporary project with `npx skills@latest add Arthird/design-designer --all -y`.
+1. Run `npx skills@latest add Arthird/design-designer@v2.0.1 --list` and confirm the working and knowledge skills are discoverable.
+2. Install the complete set into a temporary project with `npx skills@latest add Arthird/design-designer@v2.0.1 --skill '*' -a codex -y`.
 3. Invoke the orchestrator in a realistic project request and confirm it inspects first, then invokes dependencies at their documented checkpoints.
 4. Invoke each working skill directly and confirm it asks only for missing context and remains within its scope.
 5. Invoke each knowledge skill directly and confirm it returns criteria or decisions rather than executing changes.
 6. Exercise optional-integration absence and a token conflict; verify explicit fallback and risk recording.
-7. Update the installed skills and verify the source and selected scope remain as documented.
+7. Run `npx skills@latest update -p -y` and verify it updates at the recorded source/ref. Separately verify that moving to a new release uses an explicit pinned installation.
 
 ## Orchestrator dependency and checkpoint checks
 
@@ -26,6 +26,7 @@ These checks are distinct to the `design-designer` coordinator:
 - Make a token standard or tool unavailable and confirm token authoring stops rather than inventing syntax.
 - Record an accessibility-conflicting user decision and confirm it is documented in `exceptions.md` rather than called compliant.
 - Omit a component specification and confirm prototyping does not proceed using fabricated requirements.
+- Confirm a `skills update` operation is not described as a transition between release tags; explicitly installing a new pinned tag is the release-switch check.
 
 ## Workflow scenarios
 

@@ -4,28 +4,34 @@
 
 The repository uses semantic version tags. Skills in one release form a tested, compatible set. Use the repository release, not individual skill versions, as the compatibility unit.
 
-The current documented release is `v2.0.0`. Do not add per-skill version metadata or a compatibility matrix unless a future release introduces a concrete incompatibility that this release-set model cannot express.
+The current documented release is `v2.0.1`, a patch release for documentation and consistency corrections. `v2.0.0` remains an immutable earlier release. Do not add per-skill version metadata or a compatibility matrix unless a future release introduces a concrete incompatibility that this release-set model cannot express.
 
 ## Installation and updates
 
 Install the complete set from the release you intend to use:
 
 ```bash
-npx skills@latest add Arthird/design-designer@v2.0.0 --skill '*' -a codex -y
+npx skills@latest add Arthird/design-designer@v2.0.1 --skill '*' -a codex -y
 ```
 
-The recommended update path is to update the complete installed set to one release:
+The standard update command refreshes installed skills at their recorded source and ref. It does not select a new repository release:
 
 ```bash
 npx skills@latest update -p -y
 ```
 
-Do not recommend updating individual skills independently in normal operation. If a deliberate subset is installed, reinstall the complete selected subset from one release instead of mixing versions. The CLI can target individual skills, but that capability is not the repository's compatibility policy.
+To move an installation to `v2.0.1`, explicitly install the complete set from that tag:
+
+```bash
+npx skills@latest add Arthird/design-designer@v2.0.1 --skill '*' -a codex -y
+```
+
+Use `-g` instead of `-p` for global scope when appropriate. The release tag determines the installed version. All skills in a release should come from the same tag. Reinstalling may overwrite installed skill copies; preserve and review local modifications before replacement. Do not recommend updating arbitrary individual skills independently. If a deliberate subset is installed, reinstall the complete selected subset from one release instead of mixing versions.
 
 The project template must come from the same release as the skills:
 
 ```bash
-npx giget@latest gh:Arthird/design-designer/templates/project-template#v2.0.0 designed-design
+npx giget@latest gh:Arthird/design-designer/templates/project-template#v2.0.1 designed-design
 ```
 
 The Skills CLI records the requested release ref and resolved commit in `skills-lock.json`. Giget has no comparable lock, so record or verify the template source tag when maintaining a project.
@@ -50,8 +56,8 @@ Update every affected dependency table and the documentation together before tag
 
 1. Perform the applicable manual checks in `shared/workflow/manual-verification.md`.
 2. Check each affected knowledge skill's primary source, revision, and last-checked date.
-3. Confirm `npx skills@latest add Arthird/design-designer --list` discovers every installable skill.
-4. Install the complete set and verify update behavior from the release.
+3. Confirm `npx skills@latest add Arthird/design-designer@v2.0.1 --list` discovers every installable skill.
+4. Install the complete set from the candidate tag and verify recorded-ref update behavior separately from release switching.
 5. Extract the template from the same release into a new directory and verify its project structure.
 6. Update documentation and dependency declarations before tagging.
 7. Tag the release; do not create a root changelog.
