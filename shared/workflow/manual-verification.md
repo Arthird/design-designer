@@ -6,7 +6,7 @@ This repository has no automated test framework. Verify the skills through focus
 
 <context ref="file:///home/tema/projects/skills/design-designer/README.md#L7:9">
 <!-- VERSION:START -->
-**Current version:** v2.2.0
+**Current version:** v2.2.1
 <!-- VERSION:END -->
 
 </context>
