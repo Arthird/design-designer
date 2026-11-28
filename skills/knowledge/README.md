@@ -6,7 +6,7 @@ These installable knowledge skills provide domain rules and decision criteria:
 
 <context ref="file:///home/tema/projects/skills/design-designer/README.md#L7:9">
 <!-- VERSION:START -->
-**Current version:** v2.2.1
+**Current version:** v2.2.2
 <!-- VERSION:END -->
 
 </context>

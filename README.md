@@ -5,7 +5,7 @@ An installable Codex skill ecosystem for designing, documenting, validating, and
 The repository separates **working skills**, which execute tasks, from **knowledge skills**, which provide authoritative domain rules and decision criteria. Skills from one release form a compatible set. The project template is distributed separately and should be obtained from the same release.
 
 <!-- VERSION:START -->
-**Current version:** v2.2.1
+**Current version:** v2.2.2
 <!-- VERSION:END -->
 
 ## Setup
