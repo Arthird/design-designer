@@ -1,0 +1,51 @@
+name: Release
+
+on:
+  push:
+    branches: [master, main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: semantic-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Semantic release
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24.18.0
+          cache: npm
+
+      - name: Install release tooling
+        run: npm ci
+
+      - name: Test release tooling
+        run: npm run release:test
+
+      - name: Validate design-system data
+        run: |
+          node demo/design-system/scripts/validate-tokens.js
+          node demo/design-system/scripts/generate-css.js
+          git diff --exit-code -- demo/design-system/style.css
+          node templates/project-template/design-system/scripts/validate-tokens.js
+          node templates/project-template/design-system/scripts/generate-css.js
+          git diff --exit-code -- templates/project-template/design-system/style.css
+
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release

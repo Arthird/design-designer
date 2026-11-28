@@ -1,0 +1,22 @@
+{
+  "name": "design-designer-release-tools",
+  "private": true,
+  "description": "Automated semantic release tooling for the Design Designer repository.",
+  "scripts": {
+    "release": "semantic-release",
+    "release:dry-run": "semantic-release --dry-run",
+    "release:test": "node scripts/test-release-tools.js && node scripts/validate-project.js && node scripts/test-release-commit.js",
+    "release:version": "node scripts/update-version.js"
+  },
+  "devDependencies": {
+    "@semantic-release/commit-analyzer": "13.0.1",
+    "@semantic-release/exec": "7.1.0",
+    "@semantic-release/git": "11.0.1",
+    "@semantic-release/github": "12.0.11",
+    "@semantic-release/release-notes-generator": "14.1.1",
+    "semantic-release": "25.0.9"
+  },
+  "engines": {
+    "node": ">=24.15.0"
+  }
+}

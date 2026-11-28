@@ -2,19 +2,20 @@
 
 This repository has no automated test framework. Verify the skills through focused manual exercises with disposable project workspaces. Do not add a replacement test runner, CI test matrix, or fixture suite merely to complete these checks.
 
-Use disposable local copies while preparing release changes. After publication, run the installation checks against the `v2.1.1` tag and confirm that `ui-type-discovery` is included.
+Use disposable local copies while preparing release changes. After publication, run the installation checks against the new release tag and confirm that `ui-type-discovery` is included. Use the tag recorded in the GitHub Release and in the README version block.
 
 ## Standard verification sequence
 
-1. Run `npx skills@latest add Arthird/design-designer@v2.1.1 --list` and confirm the working and knowledge skills are discoverable.
-2. Install the complete set into a temporary project with `npx skills@latest add Arthird/design-designer@v2.1.1 --skill '*' -a codex -y`.
+1. Run `npx skills@latest add Arthird/design-designer@<release-tag> --list` and confirm the working and knowledge skills are discoverable.
+2. Install the complete set into a temporary project with `npx skills@latest add Arthird/design-designer@<release-tag> --skill '*' -a codex -y`.
 3. Invoke the orchestrator in a realistic project request and confirm it inspects first, then invokes dependencies at their documented checkpoints.
 4. Invoke each working skill directly and confirm it asks only for missing context and remains within its scope.
 5. Invoke each knowledge skill directly and confirm it returns criteria or decisions rather than executing changes.
 6. Exercise optional-integration absence and a token conflict; verify explicit fallback and risk recording.
 7. Run `npx skills@latest update -p -y` and verify it updates at the recorded source/ref. Separately verify that moving to a new release uses an explicit pinned installation.
-8. Extract the template with the documented Giget command and confirm it creates `designed-design/project-template`, not a project-named copy directly under `designed-design`.
+8. Extract the template from the same release tag with the documented Giget command and confirm it creates `designed-design/project-template`, not a project-named copy directly under `designed-design`.
 9. Invoke `design-designer` from the wrapper and confirm it either asks for the intended project root or selects `designed-design/project-template`; verify `design-system/` is created only below that starter, never beside it.
+10. Run `npm ci` and `npm run release:test`, then confirm the temporary release tests produce the expected `chore(release): 1.0.1 [skip ci]` commit and `v1.0.1` tag without changing the repository.
 
 ## Orchestrator dependency and checkpoint checks
 
