@@ -4,7 +4,16 @@
 
 The repository uses semantic version tags. Skills in one release form a tested, compatible set. Use the repository release, not individual skill versions, as the compatibility unit.
 
-The current release is shown in the `VERSION` block in `README.md`. `v2.1.1` was a patch release that corrected release installation guidance. `v2.1.0` introduced the `ui-type-discovery` working skill and the HTML/CSS/inline-SVG rendering workflow without changing existing skill names or output contracts. Published tags remain immutable. Do not add per-skill version metadata or a compatibility matrix unless a future release introduces a concrete incompatibility that this release-set model cannot express.
+[@README.md#L7:9](file:///home/tema/projects/skills/design-designer/README.md#L7:9)
+
+<context ref="file:///home/tema/projects/skills/design-designer/README.md#L7:9">
+<!-- VERSION:START -->
+**Current version:** v2.2.0
+<!-- VERSION:END -->
+
+</context>
+
+`v2.1.1` was a patch release that corrected release installation guidance. `v2.1.0` introduced the `ui-type-discovery` working skill and the HTML/CSS/inline-SVG rendering workflow without changing existing skill names or output contracts. Published tags remain immutable. Do not add per-skill version metadata or a compatibility matrix unless a future release introduces a concrete incompatibility that this release-set model cannot express.
 
 ## Automated releases
 
@@ -12,7 +21,7 @@ The current release is shown in the `VERSION` block in `README.md`. `v2.1.1` was
 
 The workflow checks out the complete history, installs the pinned tools in `package-lock.json`, runs `npm run release:test` and the design-system token checks, then runs `semantic-release`. The release-tool test also exercises the update, release-commit, and tag handoff against a temporary local remote. A failed check stops the release before a tag or GitHub Release is created.
 
-`semantic-release` reads the latest reachable `vX.Y.Z` tag and the commits since that tag. It applies the release rules in `scripts/release-rules.cjs`:
+`semantic-release` reads the latest reachable release tag and the commits since that tag. It applies the release rules in `scripts/release-rules.cjs`:
 
 | Commit | Release |
 | --- | --- |
@@ -21,15 +30,16 @@ The workflow checks out the complete history, installs the pinned tools in `pack
 | `fix:`, `perf:`, `revert:` | PATCH |
 | `docs:`, `test:`, `ci:`, `chore:`, `refactor:` | No release |
 
-When several commits are eligible, the highest release type wins. Unconventional commit messages are ignored for release selection. A release commit uses `chore(release): X.Y.Z [skip ci]` and is not analyzed as a version change because `chore` does not release and the resulting tag becomes the next baseline.
+When several commits are eligible, the highest release type wins. Unconventional commit messages are ignored for release selection. A release commit uses `chore(release): <version> [skip ci]` and is not analyzed as a version change because `chore` does not release and the resulting tag becomes the next baseline.
 
 `@semantic-release/exec` runs `scripts/update-version.js` before `@semantic-release/git` commits these files:
 
 - the block between `<!-- VERSION:START -->` and `<!-- VERSION:END -->` in `README.md`;
+- the README source-fragment blocks in this file, `shared/workflow/manual-verification.md`, `skills/working/README.md`, and `skills/knowledge/README.md`;
 - `VERSION`, when present;
 - the `version` field in `version.json`, when present.
 
-The version updater preserves all other README content and is idempotent. To support another file, add a focused updater function in `scripts/update-version.js`, include that file in the same `@semantic-release/git` assets array, and extend `scripts/test-release-tools.js` before releasing.
+The version updater preserves all content outside the managed blocks and is idempotent. Each source-fragment block must include the `README.md#L7:9` link and its matching `<context>` block. To support another document, add it to `VERSION_CONTEXT_FILES` in `scripts/update-version.js`, include it in the same `@semantic-release/git` assets array, and extend `scripts/test-release-tools.js` before releasing.
 
 ### GitHub configuration
 
@@ -56,7 +66,7 @@ The title of a GitHub PR is what survives a **Squash and merge** as the default 
 
 ### Initialization
 
-The repository already has the baseline tag `v2.1.1`. For another repository, create or choose the first baseline tag before enabling automation. Without a reachable release tag, `semantic-release` starts from `1.0.0`; do not create or move a tag that already exists.
+The repository already has a baseline release tag. For another repository, create or choose the first baseline tag before enabling automation. Without a reachable release tag, `semantic-release` starts from `1.0.0`; do not create or move a tag that already exists.
 
 ```bash
 git fetch --tags
@@ -75,17 +85,17 @@ npm run release:test
 GITHUB_TOKEN="<token with contents:write>" npx semantic-release --dry-run --no-ci
 ```
 
-The dry run validates configuration, history, and the next version but does not create a tag or GitHub Release. Do not use the dry run as proof of branch-protection bypass. After merging a `feat:` or `fix:` commit, verify the Release workflow, the new `vX.Y.Z` tag, the `chore(release): X.Y.Z [skip ci]` commit, the README marker, and the GitHub Release notes.
+The dry run validates configuration, history, and the next version but does not create a tag or GitHub Release. Do not use the dry run as proof of branch-protection bypass. After merging a `feat:` or `fix:` commit, verify the Release workflow, the new tag, the `chore(release): <version> [skip ci]` commit, every managed version context, and the GitHub Release notes.
 
 ## Installation and updates
 
-Install the complete set from the release you intend to use:
+Install the complete set from the current release:
 
 ```bash
-npx skills@latest add Arthird/design-designer@vX.Y.Z --skill '*' -a codex -y
+npx skills@latest add Arthird/design-designer@v2.2.0 --skill '*' -a codex -y
 ```
 
-Replace `vX.Y.Z` with the latest stable GitHub Release tag.
+The command uses the current stable release tag.
 
 The standard update command refreshes installed skills at their recorded source and ref. It does not select a new repository release:
 
@@ -96,7 +106,7 @@ npx skills@latest update -p -y
 To select a release explicitly, install the complete set from its tag:
 
 ```bash
-npx skills@latest add Arthird/design-designer@vX.Y.Z --skill '*' -a codex -y
+npx skills@latest add Arthird/design-designer@v2.2.0 --skill '*' -a codex -y
 ```
 
 Use `-g` instead of `-p` for global scope when appropriate. The release tag determines the installed version. All skills in a release should come from the same tag. Reinstalling may overwrite installed skill copies; preserve and review local modifications before replacement. Do not recommend updating arbitrary individual skills independently. If a deliberate subset is installed, reinstall the complete selected subset from one release instead of mixing versions.
@@ -104,10 +114,10 @@ Use `-g` instead of `-p` for global scope when appropriate. The release tag dete
 The project template must come from the same release as the skills:
 
 ```bash
-npx giget@latest gh:Arthird/design-designer/templates#vX.Y.Z designed-design
+npx giget@latest gh:Arthird/design-designer/templates#v2.2.0 designed-design
 ```
 
-Use the same `vX.Y.Z` tag as the installed skills.
+Use the same tag as the installed skills.
 
 The destination name identifies the wrapper, while the extracted project starter remains at `designed-design/project-template`. Run `design-designer` with that starter as the project root so generated artifacts are placed in `designed-design/project-template/design-system`.
 
@@ -133,7 +143,7 @@ Update every affected dependency table and the documentation together before tag
 
 1. Perform the applicable manual checks in `shared/workflow/manual-verification.md`.
 2. Check each affected knowledge skill's primary source, revision, and last-checked date.
-3. Confirm `npx skills@latest add Arthird/design-designer@<candidate-tag> --list` discovers every installable skill.
+3. Confirm `npx skills@latest add Arthird/design-designer@v2.2.0 --list` discovers every installable skill.
 4. Install the complete set from the candidate tag and verify recorded-ref update behavior separately from release switching.
 5. Extract the template from the same candidate release into a new directory and verify its project structure.
 6. Update documentation and dependency declarations before tagging.

@@ -25,13 +25,34 @@ function write(file, cwd, value) {
 async function testVersionFiles() {
   const { updateVersion } = require('./update-version.js');
   const cwd = tempProject();
-  const before = '# Example\n\nKeep this text.\n\n';
+  const before = '# Example\n\nKeep this text.\n\nKeep the version block at lines 7 through 9.\n\n';
   const after = '\n\nKeep this text after the marker.\n';
   write('README.md', cwd, `${before}<!-- VERSION:START -->\n**Current version:** v0.0.0\n<!-- VERSION:END -->${after}`);
   write('VERSION', cwd, '0.0.0\n');
   write('version.json', cwd, '{\n  "name": "example",\n  "version": "0.0.0",\n  "nested": { "version": "keep" }\n}\n');
+  const contextFiles = [
+    'shared/VERSIONING.md',
+    'shared/workflow/manual-verification.md',
+    'skills/working/README.md',
+    'skills/knowledge/README.md',
+  ];
+  for (const file of contextFiles) {
+    fs.mkdirSync(path.dirname(path.join(cwd, file)), { recursive: true });
+    write(
+      file,
+      cwd,
+      `# Context\n\n[@README.md#L7:9](file:///home/tema/projects/skills/design-designer/README.md#L7:9)\n\n<context ref="file:///home/tema/projects/skills/design-designer/README.md#L7:9">\n<!-- VERSION:START -->\n**Current version:** v0.0.0\n<!-- VERSION:END -->\n\n</context>\n\nKeep ${file} text.\n`,
+    );
+  }
+  write(
+    'skills/working/README.md',
+    cwd,
+    `${fs.readFileSync(path.join(cwd, 'skills/working/README.md'), 'utf8')}\nInstall with v0.0.0.\n`,
+  );
 
+  const readmeBeforeUpdate = fs.readFileSync(path.join(cwd, 'README.md'), 'utf8');
   updateVersion('2.3.4', cwd);
+  assert.notEqual(fs.readFileSync(path.join(cwd, 'README.md'), 'utf8'), readmeBeforeUpdate);
   assert.equal(
     fs.readFileSync(path.join(cwd, 'README.md'), 'utf8'),
     `${before}<!-- VERSION:START -->\n**Current version:** v2.3.4\n<!-- VERSION:END -->${after}`,
@@ -41,6 +62,12 @@ async function testVersionFiles() {
     fs.readFileSync(path.join(cwd, 'version.json'), 'utf8'),
     '{\n  "name": "example",\n  "version": "2.3.4",\n  "nested": { "version": "keep" }\n}\n',
   );
+  for (const file of contextFiles) {
+    assert.match(
+      fs.readFileSync(path.join(cwd, file), 'utf8'),
+      /<context ref="file:\/\/\/home\/tema\/projects\/skills\/design-designer\/README\.md#L7:9">\n<!-- VERSION:START -->\n\*\*Current version:\*\* v2\.3\.4\n<!-- VERSION:END -->/,
+    );
+  }
 
   const readmeBeforeSecondRun = fs.readFileSync(path.join(cwd, 'README.md'), 'utf8');
   updateVersion('2.3.4', cwd);
@@ -49,8 +76,11 @@ async function testVersionFiles() {
   assert.throws(() => updateVersion('not-a-version', cwd), /Invalid semantic version/);
 
   write('README.md', cwd, '# Broken\n\n<!-- VERSION:START -->\nNo end marker.\n');
-  assert.throws(() => updateVersion('2.3.5', cwd), /ordered VERSION:START\/VERSION:END block/);
+  assert.throws(() => updateVersion('2.3.5', cwd), /lines 7 through 9/);
   assert.equal(fs.readFileSync(path.join(cwd, 'README.md'), 'utf8'), '# Broken\n\n<!-- VERSION:START -->\nNo end marker.\n');
+  write('skills/working/README.md', cwd, '# Missing context\n');
+  write('README.md', cwd, `${before}<!-- VERSION:START -->\n**Current version:** v2.3.4\n<!-- VERSION:END -->${after}`);
+  assert.throws(() => updateVersion('2.3.5', cwd), /skills\/working\/README\.md must contain the README\.md#L7:9 version context fragment/);
   fs.rmSync(cwd, { recursive: true, force: true });
 }
 

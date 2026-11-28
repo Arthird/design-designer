@@ -16,6 +16,10 @@ const FILES = [
   'package-lock.json',
   'scripts/release-rules.cjs',
   'scripts/update-version.js',
+  'shared/VERSIONING.md',
+  'shared/workflow/manual-verification.md',
+  'skills/working/README.md',
+  'skills/knowledge/README.md',
 ];
 
 function git(cwd, ...args) {

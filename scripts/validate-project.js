@@ -4,6 +4,7 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
+const { fileURLToPath } = require('node:url');
 
 const ROOT = path.resolve(__dirname, '..');
 const errors = [];
@@ -36,8 +37,13 @@ function validateLinks(file) {
   const text = fs.readFileSync(file, 'utf8');
   for (const match of text.matchAll(/\[[^\]]*\]\(([^)]+)\)/g)) {
     const target = match[1].trim().replace(/^<|>$/g, '').split('#', 1)[0];
-    if (!target || /^[a-z][a-z\d+.-]*:/i.test(target)) continue;
-    if (!fs.existsSync(path.resolve(path.dirname(file), target))) {
+    if (!target) continue;
+    const resolved = target.startsWith('file:')
+      ? fileURLToPath(target)
+      : /^[a-z][a-z\d+.-]*:/i.test(target)
+        ? null
+        : path.resolve(path.dirname(file), target);
+    if (resolved && !fs.existsSync(resolved)) {
       errors.push(`${path.relative(ROOT, file)}: missing local link ${match[1]}`);
     }
   }

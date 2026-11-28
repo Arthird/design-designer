@@ -8,6 +8,20 @@ const path = require('node:path');
 const README_START = '<!-- VERSION:START -->';
 const README_END = '<!-- VERSION:END -->';
 const SEMVER = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
+const VERSION_REFERENCE = 'file:///home/tema/projects/skills/design-designer/README.md#L7:9';
+const VERSION_CONTEXT_FILES = [
+  'shared/VERSIONING.md',
+  'shared/workflow/manual-verification.md',
+  'skills/working/README.md',
+  'skills/knowledge/README.md',
+];
+const VERSION_REFERENCE_FILES = [
+  'README.md',
+  'shared/VERSIONING.md',
+  'shared/workflow/manual-verification.md',
+  'skills/working/README.md',
+  'skills/knowledge/README.md',
+];
 
 function fail(message) {
   throw new Error(message);
@@ -36,6 +50,11 @@ function updateReadme(version, cwd) {
   const original = readOptional('README.md', cwd);
   if (original === null) fail('README.md does not exist.');
 
+  const lines = original.split('\n');
+  if (lines[6] !== README_START || lines[8] !== README_END) {
+    fail('README.md version block must remain on lines 7 through 9.');
+  }
+
   const start = original.indexOf(README_START);
   const end = original.indexOf(README_END);
   if (start === -1 || end === -1 || end < start) {
@@ -53,6 +72,60 @@ function updateReadme(version, cwd) {
     original.slice(0, start) + block + original.slice(end + README_END.length),
     cwd,
   );
+}
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function versionContext(version) {
+  return [
+    `[@README.md#L7:9](${VERSION_REFERENCE})`,
+    '',
+    `<context ref="${VERSION_REFERENCE}">`,
+    README_START,
+    `**Current version:** v${version}`,
+    README_END,
+    '',
+    '</context>',
+  ].join('\n');
+}
+
+function updateVersionContexts(version, cwd) {
+  const reference = escapeRegExp(VERSION_REFERENCE);
+  const pattern = new RegExp(
+    `\\[@README\\.md#L7:9\\]\\(${reference}\\)\\s*<context ref="${reference}">[\\s\\S]*?</context>`,
+  );
+  let changed = 0;
+
+  for (const file of VERSION_CONTEXT_FILES) {
+    const original = readOptional(file, cwd);
+    if (original === null) fail(`${file} does not exist.`);
+    if (!pattern.test(original)) {
+      fail(`${file} must contain the README.md#L7:9 version context fragment.`);
+    }
+    const next = original.replace(pattern, versionContext(version));
+    if (writeIfChanged(file, original, next, cwd)) changed += 1;
+  }
+
+  return changed;
+}
+
+function updateVersionReferences(version, cwd) {
+  const current = readOptional('README.md', cwd);
+  if (current === null) fail('README.md does not exist.');
+  const match = current.match(/\*\*Current version:\*\* v(\d+\.\d+\.\d+)/);
+  if (!match) fail('README.md current version is not readable.');
+  if (match[1] === version) return 0;
+
+  let changed = 0;
+  for (const file of VERSION_REFERENCE_FILES) {
+    const original = readOptional(file, cwd);
+    if (original === null) fail(`${file} does not exist.`);
+    const next = original.replaceAll(`v${match[1]}`, `v${version}`);
+    if (writeIfChanged(file, original, next, cwd)) changed += 1;
+  }
+  return changed;
 }
 
 function updatePlainVersion(version, cwd) {
@@ -91,12 +164,12 @@ function updateJsonVersion(version, cwd) {
 
 function updateVersion(value, cwd = process.cwd()) {
   const version = parseVersion(value);
-  const changed = [
-    updateReadme(version, cwd),
-    updatePlainVersion(version, cwd),
-    updateJsonVersion(version, cwd),
-  ].filter(Boolean).length;
-  process.stdout.write(`Updated ${changed} version file(s) to ${version}.\n`);
+  updateReadme(version, cwd);
+  updateVersionReferences(version, cwd);
+  updatePlainVersion(version, cwd);
+  updateJsonVersion(version, cwd);
+  updateVersionContexts(version, cwd);
+  process.stdout.write(`Updated version references to ${version}.\n`);
   return version;
 }
 
