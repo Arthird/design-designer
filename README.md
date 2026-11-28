@@ -5,7 +5,7 @@ An installable Codex skill ecosystem for designing, documenting, validating, and
 The repository separates **working skills**, which execute tasks, from **knowledge skills**, which provide authoritative domain rules and decision criteria. Skills from one release form a compatible set. The project template is distributed separately and should be obtained from the same release.
 
 <!-- VERSION:START -->
-**Current version:** v2.2.3
+**Current version:** v2.2.4
 <!-- VERSION:END -->
 
 ## Setup
@@ -15,7 +15,7 @@ The repository separates **working skills**, which execute tasks, from **knowled
 Use the [Skills CLI](https://github.com/vercel-labs/skills) to install the complete compatible skill set from the current version above:
 
 ```bash
-npx skills@latest add Arthird/design-designer@v2.2.0 --skill '*' -a codex -y
+npx skills@latest add Arthird/design-designer@v2.2.4 --skill '*' -a codex -y
 ```
 
 The release tag determines which skills are installed. Use the complete set from one tag. Add `-g` for a user-global installation; otherwise the CLI installs project-local Codex skills under `.agents/skills/`.
@@ -23,7 +23,7 @@ The release tag determines which skills are installed. Use the complete set from
 An interactive alternative is to omit `--skill`, `-a`, and `-y` after selecting the current release source:
 
 ```bash
-npx skills@latest add Arthird/design-designer@v2.2.0
+npx skills@latest add Arthird/design-designer@v2.2.4
 ```
 
 Select the complete skill set rather than mixing releases.
@@ -31,7 +31,7 @@ Select the complete skill set rather than mixing releases.
 Browse available skills without installing:
 
 ```bash
-npx skills@latest add Arthird/design-designer@v2.2.0 --list
+npx skills@latest add Arthird/design-designer@v2.2.4 --list
 ```
 
 ### Step 2 — obtain the project template
@@ -39,7 +39,7 @@ npx skills@latest add Arthird/design-designer@v2.2.0 --list
 The template is not part of the Skills CLI installation. Use Giget to extract it from the same release as the installed skills:
 
 ```bash
-npx giget@latest gh:Arthird/design-designer/templates#v2.2.0 designed-design
+npx giget@latest gh:Arthird/design-designer/templates#v2.2.4 designed-design
 ```
 
 The destination remains `designed-design`, and the project starter is kept in `designed-design/project-template` so its role is explicit. Keep the template tag aligned with the skills release.
@@ -90,7 +90,7 @@ Use `-g` instead of `-p` for user-global installations. This command is suitable
 To move to a new release, explicitly install the complete set from that tag:
 
 ```bash
-npx skills@latest add Arthird/design-designer@v2.2.0 --skill '*' -a codex -y
+npx skills@latest add Arthird/design-designer@v2.2.4 --skill '*' -a codex -y
 ```
 
 All skills in a release should come from the same tag. Reinstalling may overwrite installed skill copies, so preserve and review local skill modifications before replacing them. Do not update arbitrary individual skills independently.

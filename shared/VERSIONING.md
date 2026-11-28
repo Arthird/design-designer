@@ -8,7 +8,7 @@ The repository uses semantic version tags. Skills in one release form a tested, 
 
 <context ref="file:///home/tema/projects/skills/design-designer/README.md#L7:9">
 <!-- VERSION:START -->
-**Current version:** v2.2.3
+**Current version:** v2.2.4
 <!-- VERSION:END -->
 
 </context>
@@ -92,7 +92,7 @@ The dry run validates configuration, history, and the next version but does not 
 Install the complete set from the current release:
 
 ```bash
-npx skills@latest add Arthird/design-designer@v2.2.0 --skill '*' -a codex -y
+npx skills@latest add Arthird/design-designer@v2.2.4 --skill '*' -a codex -y
 ```
 
 The command uses the current stable release tag.
@@ -106,7 +106,7 @@ npx skills@latest update -p -y
 To select a release explicitly, install the complete set from its tag:
 
 ```bash
-npx skills@latest add Arthird/design-designer@v2.2.0 --skill '*' -a codex -y
+npx skills@latest add Arthird/design-designer@v2.2.4 --skill '*' -a codex -y
 ```
 
 Use `-g` instead of `-p` for global scope when appropriate. The release tag determines the installed version. All skills in a release should come from the same tag. Reinstalling may overwrite installed skill copies; preserve and review local modifications before replacement. Do not recommend updating arbitrary individual skills independently. If a deliberate subset is installed, reinstall the complete selected subset from one release instead of mixing versions.
@@ -114,7 +114,7 @@ Use `-g` instead of `-p` for global scope when appropriate. The release tag dete
 The project template must come from the same release as the skills:
 
 ```bash
-npx giget@latest gh:Arthird/design-designer/templates#v2.2.0 designed-design
+npx giget@latest gh:Arthird/design-designer/templates#v2.2.4 designed-design
 ```
 
 Use the same tag as the installed skills.
@@ -143,7 +143,7 @@ Update every affected dependency table and the documentation together before tag
 
 1. Perform the applicable manual checks in `shared/workflow/manual-verification.md`.
 2. Check each affected knowledge skill's primary source, revision, and last-checked date.
-3. Confirm `npx skills@latest add Arthird/design-designer@v2.2.0 --list` discovers every installable skill.
+3. Confirm `npx skills@latest add Arthird/design-designer@v2.2.4 --list` discovers every installable skill.
 4. Install the complete set from the candidate tag and verify recorded-ref update behavior separately from release switching.
 5. Extract the template from the same candidate release into a new directory and verify its project structure.
 6. Update documentation and dependency declarations before tagging.

@@ -6,7 +6,7 @@ These installable skills perform design-system tasks:
 
 <context ref="file:///home/tema/projects/skills/design-designer/README.md#L7:9">
 <!-- VERSION:START -->
-**Current version:** v2.2.3
+**Current version:** v2.2.4
 <!-- VERSION:END -->
 
 </context>
@@ -20,7 +20,7 @@ These installable skills perform design-system tasks:
 Install one or more:
 
 ```bash
-npx skills@latest add Arthird/design-designer@v2.2.0 --skill design-designer --skill ui-type-discovery --skill design-coder --skill design-auditor --skill token-writer
+npx skills@latest add Arthird/design-designer@v2.2.4 --skill design-designer --skill ui-type-discovery --skill design-coder --skill design-auditor --skill token-writer
 ```
 
 Use a pinned release ref for reproducible installs. Use the current release from the README context above.
