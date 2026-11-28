@@ -3,6 +3,7 @@
 'use strict';
 
 const fs = require('node:fs');
+const os = require('node:os');
 const path = require('node:path');
 const { fileURLToPath } = require('node:url');
 
@@ -43,7 +44,9 @@ function validateLinks(file) {
       : /^[a-z][a-z\d+.-]*:/i.test(target)
         ? null
         : path.resolve(path.dirname(file), target);
-    if (resolved && !fs.existsSync(resolved)) {
+    const externalAbsolute = resolved && path.isAbsolute(resolved) &&
+      !resolved.startsWith(ROOT + path.sep) && !resolved.startsWith(os.tmpdir() + path.sep);
+    if (resolved && !externalAbsolute && !fs.existsSync(resolved)) {
       errors.push(`${path.relative(ROOT, file)}: missing local link ${match[1]}`);
     }
   }
