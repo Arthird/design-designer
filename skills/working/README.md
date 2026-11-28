@@ -14,6 +14,6 @@ Install one or more:
 npx skills@latest add Arthird/design-designer --skill design-designer --skill ui-type-discovery --skill design-coder --skill design-auditor --skill token-writer
 ```
 
-Installation commands use the published repo ref until a new release containing `ui-type-discovery` is prepared. Inspect the current release before installing a pinned set.
+Use a pinned release ref for reproducible installs. `v2.1.1` is the current published release.
 
 CLI discovery excludes `README.md`; installable units are the skill directories containing `SKILL.md`.

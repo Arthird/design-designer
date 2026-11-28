@@ -2,12 +2,12 @@
 
 This repository has no automated test framework. Verify the skills through focused manual exercises with disposable project workspaces. Do not add a replacement test runner, CI test matrix, or fixture suite merely to complete these checks.
 
-Use disposable local copies while preparing release changes. After publication, run the installation checks against the `v2.1.0` tag and confirm that `ui-type-discovery` is included.
+Use disposable local copies while preparing release changes. After publication, run the installation checks against the `v2.1.1` tag and confirm that `ui-type-discovery` is included.
 
 ## Standard verification sequence
 
-1. Run `npx skills@latest add Arthird/design-designer@v2.1.0 --list` and confirm the working and knowledge skills are discoverable.
-2. Install the complete set into a temporary project with `npx skills@latest add Arthird/design-designer@v2.1.0 --skill '*' -a codex -y`.
+1. Run `npx skills@latest add Arthird/design-designer@v2.1.1 --list` and confirm the working and knowledge skills are discoverable.
+2. Install the complete set into a temporary project with `npx skills@latest add Arthird/design-designer@v2.1.1 --skill '*' -a codex -y`.
 3. Invoke the orchestrator in a realistic project request and confirm it inspects first, then invokes dependencies at their documented checkpoints.
 4. Invoke each working skill directly and confirm it asks only for missing context and remains within its scope.
 5. Invoke each knowledge skill directly and confirm it returns criteria or decisions rather than executing changes.
