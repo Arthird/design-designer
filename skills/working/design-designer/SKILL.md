@@ -1,6 +1,6 @@
 ---
 name: design-designer
-description: Orchestrate project-specific design-system creation, extension, documentation, tokens, component specifications, CSS-only visual prototypes, audits, exceptions, progress, and changelog. Use for end-to-end design-system work across web, mobile, desktop, or mixed platforms; not for production application implementation.
+description: Orchestrate project-specific design-system creation, extension, documentation, tokens, component specifications, platform-aware static HTML/CSS/SVG prototypes, audits, exceptions, progress, and changelog. Use for end-to-end design-system work across web, mobile, desktop, or mixed platforms; not for production application implementation.
 metadata:
   short-description: Orchestrate project design systems
 ---
@@ -34,9 +34,10 @@ Use this discovery order:
 | `bem-components` | knowledge | Phase 6 before naming component architecture; Phase 9 before CSS; Phase 10 during component/CSS audit. | Mandatory when BEM is the documented naming convention. | Use a documented project convention if available; otherwise ask and record the alternative. |
 | `apple-platform-guidance` | knowledge | Phase 1 after confirming an Apple platform; Phase 3 for platform rules; Phase 6 and Phase 10 for Apple interaction requirements. | Mandatory for confirmed Apple targets. | Do not substitute web conventions. Continue other work and flag Apple platform review as unresolved. |
 | `material-platform-guidance` | knowledge | Phase 1 after confirming a Material target; Phase 3 for platform rules; Phase 6 and Phase 10 for Material interaction requirements. | Mandatory for confirmed Material targets. | Do not substitute web conventions. Continue other work and flag Material platform review as unresolved. |
-| `token-writer` | working | Phase 4, after approved rules and token requirements are known; again for later public token changes. | Mandatory for authoring/repairing `design-tokens.json` and regenerating CSS. | Recommend installation; use an existing project token pipeline only after inspecting and documenting it. |
-| `design-coder` | working | Phase 9, only after the target component specification is approved enough to determine variants and states. | Mandatory for visual HTML/CSS prototyping. | Recommend installation and avoid editing prototype files without a documented equivalent workflow. |
-| `design-auditor` | working | Phase 10 after tokens, after initial specs, after prototyping, and before final review. | Mandatory for claiming `Reviewed`. | Perform only explicitly in-scope checks, report the missing specialist audit, and leave review status unreviewed. |
+| `token-writer` | working invocation | Phase 4, after approved rules and token requirements are known; again for later public token changes. Only the orchestrator invokes it. | Mandatory for authoring/repairing `design-tokens.json` and regenerating CSS. | Recommend installation; use an existing project token pipeline only after inspecting and documenting it. |
+| `ui-type-discovery` | working invocation | Phase 9, after the visual direction and component scope are approved, when the user selected a specialized platform-like visual language; a UI kit search or revision was requested; or no current approved rendering plan covers the task. Not required for an ordinary web interface with no specialized visual language. Only the orchestrator invokes it. | Conditional for specialized visual languages and external UI-kit decisions. | Continue with documented semantic HTML/CSS and justified inline SVG when the visual language can be handled locally; state that external renderer discovery was unavailable and do not imply a library was approved. |
+| `design-coder` | working invocation | Phase 9, only after the target component specification and applicable rendering decision are approved enough to determine variants, states, and permitted renderers. Only the orchestrator invokes it. | Mandatory for static HTML/CSS/SVG visual prototyping. | Recommend installation and avoid editing prototype files without a documented equivalent workflow. |
+| `design-auditor` | working invocation | Phase 10 after tokens, after initial specs, after prototyping, and before final review. Only the orchestrator invokes it. | Mandatory for claiming `Reviewed`. | Perform only explicitly in-scope checks, report the missing specialist audit, and leave review status unreviewed. |
 | `ui-ux-pro-max` (external) | optional design intelligence | Phase 2 discovery and again only when a new visual direction is needed. It never replaces local knowledge or standards. | Optional. Install separately with `npx skills@latest add nextlevelbuilder/ui-ux-pro-max-skill --skill ui-ux-pro-max -a codex`. | Use the fallback path in `ux-design-intelligence`; never imply it ran. |
 
 The dependency graph is acyclic: knowledge skills never invoke working skills; the orchestrator invokes working skills after the applicable knowledge checkpoint; working skills may consult knowledge skills but do not orchestrate one another. Do not copy, install, modify, or redistribute `ui-ux-pro-max` from this skill.
@@ -96,7 +97,15 @@ Create or update `design-system/implementation-plan.md`, ordering work by depend
 
 ### Phase 9: coordinate visual prototyping
 
-Invoke `$design-coder` for each approved specification. Require it to consult its declared knowledge dependencies, use generated global custom properties, produce scoped BEM CSS where BEM applies, and use semantic static HTML. No JavaScript, application logic, data loading, simulated submission, or fake navigation. Update the registry only after examples and documentation agree.
+Establish the rendering decision before implementation:
+
+1. Inspect `design-system/rendering/rendering-plan.md` and `library-registry.md` when they exist. Reuse an approved plan whose visual language, platforms, exact versions, components, states, and dependencies still match.
+2. Invoke `$ui-type-discovery` after the visual direction and component scope are approved when a specialized visual language requires a renderer search or the current plan is missing, stale, incomplete, or explicitly challenged. Do not invoke it solely because a component needs ordinary semantic HTML/CSS.
+3. Review the discovery result. Require a plan with verified sources, licenses, exact versions, runtime policy, component coverage, and limitations. Obtain user approval for any new dependency or any change to the no-custom-JavaScript constraint.
+4. Pass the approved plan, or an explicit decision to use a documented custom HTML/CSS/inline SVG fallback, to `$design-coder` together with each approved specification.
+5. Invoke `$design-coder` only after the applicable rendering decision and component specification are settled. Require it to consult its knowledge dependencies, consume generated tokens, scope BEM CSS where BEM applies, preserve semantic HTML controls, and write `rendering-report.md` whenever a plan is used. No JavaScript, application logic, data loading, simulated submission, or fake navigation.
+
+Update the component registry only after examples and documentation agree. After prototyping, invoke `$design-auditor` for the plan, renderer use, HTML/CSS, SVG, semantics, and remaining limitations. `ui-type-discovery` and `design-coder` do not launch one another; the orchestrator owns both handoffs.
 
 ### Phase 10: audit at review gates
 
@@ -115,4 +124,4 @@ Create or update `design-system/changelog.md` for project-level changes to rules
 
 ## Completion criteria
 
-Before declaring a system reviewed, verify approved rules; standard-conformant tokens; deterministic fresh CSS; aligned component specs and examples; approved BEM and semantic conventions; no JavaScript in visual prototypes; recorded exceptions and risks; an audit separating confirmed issues from unknowns; accurate registry state; and meaningful project changelog history.
+Before declaring a system reviewed, verify approved rules; standard-conformant tokens; deterministic fresh CSS; aligned component specs and examples; approved BEM and semantic conventions; an approved rendering decision when specialized rendering was required; no JavaScript in visual prototypes; recorded exceptions and risks; an audit separating confirmed issues from unknowns; accurate registry state; and meaningful project changelog history.

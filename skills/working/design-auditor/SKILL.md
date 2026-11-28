@@ -24,8 +24,9 @@ For contributor-level acceptance checks, use the canonical [manual verification 
 | `apple-platform-guidance` | knowledge | Before reviewing a confirmed Apple target. | Mandatory for Apple targets. | Exclude universal claims about Apple behavior; classify it as unverified. |
 | `material-platform-guidance` | knowledge | Before reviewing a confirmed Material target. | Mandatory for Material targets. | Exclude universal claims about Material behavior; classify it as unverified. |
 | `ux-design-intelligence` | knowledge | When judging visual consistency, product fit, hierarchy, interaction clarity, density, usability, or design-direction quality. | Mandatory for expert UX/visual judgment. | Use explicit project criteria and label the remaining judgment limited. |
-| `token-writer` | working | Only if the user asks for a separate remediation after the audit baseline. | Optional, coordinated as a new workflow rather than an audit sub-step. | Leave remediation as a recommendation; do not mutate the audit baseline. |
-| `design-coder` | working | Only if the user asks separately for prototype corrections after the audit. | Optional, coordinated as a new workflow rather than an audit sub-step. | Leave the confirmed issue and recommended fix for the responsible workflow. |
+| `token-writer` | handoff target | Only if the user asks for a separate remediation after the audit baseline. It is not invoked by this skill. | Optional; coordinated as a new workflow rather than an audit sub-step. | Leave remediation as a recommendation; do not mutate the audit baseline. |
+| `ui-type-discovery` | handoff target | When the rendering plan itself needs a new discovery decision after the audit. It is not invoked by this skill. | Optional; coordinated as a separate workflow by the user or `design-designer`. | Report the evidence gap and needed discovery; do not search for or add a replacement library as part of the audit. |
+| `design-coder` | handoff target | Only if the user asks separately for prototype corrections after the audit. It is not invoked by this skill. | Optional; coordinated as a new workflow rather than an audit sub-step. | Leave the confirmed issue and recommended fix for the responsible workflow. |
 
 Knowledge skills are assessed by their own rules. The auditor does not invoke `design-designer` for a knowledge answer and does not create circular dependencies by asking an implementation skill to justify an audit finding. Post-audit remediation is a separate workflow when requested.
 
@@ -37,6 +38,7 @@ When called directly, inspect the repository before asking questions. Locate:
 - `design-tokens.json`, generated `style.css`, and transformation tools;
 - `components.md` and each component specification;
 - HTML examples and component CSS;
+- `design-system/rendering/library-registry.md`, `rendering-plan.md`, and `rendering-report.md` when present;
 - platform and framework configuration;
 - existing design conventions and relevant approved references.
 
@@ -75,7 +77,26 @@ Inspect each component's specification, state table, HTML, CSS, and registry row
 - dependencies and exceptions are explicit;
 - registry status is supported by evidence.
 
-### 5. Evaluate accessibility and platform behavior
+### 5. Evaluate the rendering decision and implementation
+
+When a specialized visual language or an approved renderer is in scope, compare `rendering-plan.md`, `library-registry.md`, `rendering-report.md`, and the actual HTML/CSS. Check:
+
+- the implemented visual language and target platform match the approved plan;
+- the plan is `Approved`, current, and covers the reviewed components and states;
+- each component uses the renderer the report claims, with no undisclosed substitution by a homemade imitation;
+- library components and classes follow the official usage and the selected exact version;
+- dependency versions, official sources, licenses, runtime requirements, and loading method are recorded;
+- no unapproved dependency, `latest` URL, copied code, font, icon, screenshot, logo, or other asset appears;
+- CSS is scoped, token adaptation is documented, and no competing platform style was introduced without an approved reason;
+- inline SVG is justified, embedded in HTML, structured with `viewBox` and useful groups, and has correct informative versus decorative accessibility treatment;
+- ordinary text remains HTML text;
+- every interactive control remains a semantic HTML control rather than an SVG substitute;
+- no JavaScript, application behavior, data loading, fake submission, or fake navigation was added;
+- no runtime-dependent Web Components library was enabled without an explicit approved exception to the JavaScript policy.
+
+Separate visual resemblance from native behavior. A web prototype styled as Windows, macOS, iOS, Android, a console dashboard, or another platform remains a web prototype unless the actual target and implementation prove native behavior. Classify behavior that cannot be verified from static artifacts as `Unverifiable` or `Potential issue`.
+
+### 6. Evaluate accessibility and platform behavior
 
 Apply `web-accessibility` as the mandatory WCAG 2.2 and APG foundation for every accessibility audit. On native projects, use relevant criteria as a baseline, but explicitly require separate evaluation of platform accessibility APIs, native semantics, focus and reading order, announcements, target sizes, scaling, gestures, and assistive technologies such as VoiceOver and TalkBack. Platform guidance skills describe platform UI conventions; they do not certify native accessibility.
 
@@ -87,11 +108,11 @@ Differentiate:
 
 Never say a static prototype is keyboard or screen-reader accessible merely because CSS contains a focus selector. Never describe a web-based audit alone as complete native accessibility coverage or certification.
 
-### 6. Evaluate UX and visual quality
+### 7. Evaluate UX and visual quality
 
 Use `ux-design-intelligence` for product fit, hierarchy, interaction clarity, density, responsive priority, and inconsistencies not captured by mechanical rules. Recommend from evidence and approved direction, not personal taste. Explain the user impact and the tradeoff.
 
-### 7. Use tools as evidence
+### 8. Use tools as evidence
 
 If the project supplies a token validator, generator, contrast helper, or audit utility, run only the ones relevant to scope and inspect their implementations first. Treat their outputs as evidence:
 

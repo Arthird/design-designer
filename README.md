@@ -8,10 +8,10 @@ The repository separates **working skills**, which execute tasks, from **knowled
 
 ### Step 1 — install the skills
 
-Use the [Skills CLI](https://github.com/vercel-labs/skills) to install the complete compatible skill set from the `v2.0.2` release:
+Use the [Skills CLI](https://github.com/vercel-labs/skills) to install the complete compatible skill set from the `v2.1.0` release:
 
 ```bash
-npx skills@latest add Arthird/design-designer@v2.0.2 --skill '*' -a codex -y
+npx skills@latest add Arthird/design-designer@v2.1.0 --skill '*' -a codex -y
 ```
 
 The release tag determines which skills are installed. Use the complete set from one tag. Add `-g` for a user-global installation; otherwise the CLI installs project-local Codex skills under `.agents/skills/`.
@@ -19,7 +19,7 @@ The release tag determines which skills are installed. Use the complete set from
 An interactive alternative is to omit `--skill`, `-a`, and `-y` after pinning the release source:
 
 ```bash
-npx skills@latest add Arthird/design-designer@v2.0.2
+npx skills@latest add Arthird/design-designer@v2.1.0
 ```
 
 Select the complete skill set rather than mixing releases.
@@ -27,7 +27,7 @@ Select the complete skill set rather than mixing releases.
 Browse available skills without installing:
 
 ```bash
-npx skills@latest add Arthird/design-designer@v2.0.2 --list
+npx skills@latest add Arthird/design-designer@v2.1.0 --list
 ```
 
 ### Step 2 — obtain the project template
@@ -35,10 +35,10 @@ npx skills@latest add Arthird/design-designer@v2.0.2 --list
 The template is not part of the Skills CLI installation. Use Giget to extract it from the same release as the installed skills:
 
 ```bash
-npx giget@latest gh:Arthird/design-designer/templates#v2.0.2 designed-design
+npx giget@latest gh:Arthird/design-designer/templates#v2.1.0 designed-design
 ```
 
-The destination remains `designed-design`, and the project starter is kept in `designed-design/project-template` so its role is explicit. Keep the template tag aligned with the skills release. The `v2.0.2` skills must be paired with the `v2.0.2` template.
+The destination remains `designed-design`, and the project starter is kept in `designed-design/project-template` so its role is explicit. Keep the template tag aligned with the skills release. The `v2.1.0` skills must be paired with the `v2.1.0` template.
 
 ### Step 3 — start working
 
@@ -51,14 +51,16 @@ cd designed-design/project-template
 Do not invoke the workflow from the parent `designed-design` wrapper or from the repository root. The generated `design-system/` directory belongs inside the selected project root; otherwise it is created outside the starter directory.
 
 ```text
-Use $design-designer to inspect this project and guide it through requirements, design rules, tokens, component specifications, CSS-only visual prototypes, exceptions, audits, and project changelog.
+Use $design-designer to inspect this project and guide it through requirements, design rules, tokens, component specifications, platform-aware HTML/CSS/SVG visual prototypes, exceptions, audits, and project changelog.
 ```
 
 Working skills can also be invoked directly:
 
 ```text
 Use $token-writer to update semantic tokens and regenerate the project CSS.
-Use $design-coder to prototype the approved input states in semantic HTML and scoped BEM CSS.
+Use $ui-type-discovery to find an HTML/CSS library for a Windows 11-inspired interface.
+Use $ui-type-discovery to investigate terminal UI libraries and prepare a rendering plan.
+Use $design-coder to create static prototypes using the approved rendering plan.
 Use $design-auditor to audit the current design system without changing the baseline.
 ```
 
@@ -73,7 +75,7 @@ Use $design-tokens-standard to review this token structure before we edit the so
 
 Obtaining a template into a new directory is **not** an update workflow. Do not extract a new template over an existing project or overwrite local work.
 
-The standard update command refreshes skills from the source and ref recorded at installation. It does **not** switch a `v2.0.1` installation to `v2.0.2`:
+The standard update command refreshes skills from the source and ref recorded at installation. It does **not** switch a `v2.0.2` installation to `v2.1.0`:
 
 ```bash
 npx skills@latest update -p -y
@@ -81,10 +83,10 @@ npx skills@latest update -p -y
 
 Use `-g` instead of `-p` for user-global installations. This command is suitable for receiving updates within the recorded source/ref; it is not the release-selection mechanism.
 
-To move to `v2.0.2`, explicitly install the complete set from that tag:
+To move to `v2.1.0`, explicitly install the complete set from that tag:
 
 ```bash
-npx skills@latest add Arthird/design-designer@v2.0.2 --skill '*' -a codex -y
+npx skills@latest add Arthird/design-designer@v2.1.0 --skill '*' -a codex -y
 ```
 
 All skills in a release should come from the same tag. Reinstalling may overwrite installed skill copies, so preserve and review local skill modifications before replacing them. Do not update arbitrary individual skills independently.
@@ -97,9 +99,10 @@ To evaluate template changes, extract the desired release into a new directory a
 
 | Skill             | Responsibility                                                                                                                             |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| `design-designer` | Orchestrates discovery, knowledge checkpoints, rules, component registry, exceptions, planning, delegation, audits, and project changelog. |
-| `design-coder`    | Creates static HTML/CSS visual prototypes from approved specifications without JavaScript or application behavior.                         |
-| `design-auditor`  | Performs expert design-system audits and distinguishes confirmed violations, potential issues, recommendations, and unverifiable claims.   |
+| `design-designer` | Orchestrates discovery, knowledge checkpoints, visual-language and rendering decisions, rules, component registry, exceptions, planning, delegation, audits, and project changelog. |
+| `ui-type-discovery` | Researches platform-inspired UI libraries, verifies sources, licenses, versions, runtime constraints, and writes a project rendering registry and plan when needed. |
+| `design-coder`    | Creates framework-independent static HTML/CSS/SVG visual prototypes from approved specifications and rendering decisions without application JavaScript. |
+| `design-auditor`  | Audits tokens, specifications, rendering decisions, semantics, HTML/CSS/SVG prototypes, and unverifiable claims. |
 | `token-writer`    | Creates or repairs `design-tokens.json` and runs deterministic validation/CSS generation using project tools.                              |
 
 ### Knowledge skills
@@ -130,9 +133,13 @@ design-designer
   -> [knowledge] web-ui-foundations
   -> [knowledge] bem-components
   -> [knowledge] web-accessibility
+  -> [working, conditional] ui-type-discovery
+  -> [optional] approved rendering-plan.md
   -> design-coder
   -> design-auditor
 ```
+
+`ui-type-discovery` is conditional. It runs when the user selects or confirms a specialized platform-like visual language, requests a UI-kit search or revision, or no current approved rendering plan covers the task. Ordinary framework-independent web UI can proceed directly with semantic HTML/CSS. When no suitable external kit exists, custom HTML/CSS and inline SVG remain a valid rendering strategy.
 
 The complete dependency, mandatory/optional, and fallback table is in [design-designer's `SKILL.md`](skills/working/design-designer/SKILL.md). Each working skill also declares its own checkpoints so it remains usable when invoked directly. The dependency graph is acyclic.
 
@@ -151,6 +158,7 @@ The orchestrator inspects its actual instructions before use, applies verified r
 ├── skills/
 │   ├── working/                 # Installable task workflows
 │   │   ├── design-designer/
+│   │   ├── ui-type-discovery/
 │   │   ├── design-coder/
 │   │   ├── design-auditor/
 │   │   └── token-writer/
@@ -167,6 +175,8 @@ The orchestrator inspects its actual instructions before use, applies verified r
 │   ├── VERSIONING.md
 │   └── SOURCE-FRESHNESS.md
 ├── templates/                   # Component and project starter assets
+│   └── project-template/design-system/
+│       └── rendering-templates/ # Optional rendered-project document starters
 ├── demo/design-system/          # Demonstrated design-system fixture
 ├── README.md
 ├── LICENSE
@@ -199,6 +209,8 @@ node design-system/scripts/generate-css.js
 
 `style.css` is deterministic generated output and must not be hand-edited. Shared base styles belong in `scripts/style-template.css`. These are operational project tools, not automated testing infrastructure.
 
+Projects that use a specialized visual language may add `design-system/rendering/library-registry.md`, `rendering-plan.md`, and `rendering-report.md`. Starter documents are under `templates/project-template/design-system/rendering-templates/`; create the target directory only when the project actually needs a rendering decision. Ordinary HTML/CSS projects do not require an empty rendering subsystem.
+
 ## Accessibility scope
 
 WCAG 2.2 and WAI-ARIA Authoring Practices remain the mandatory accessibility foundation for web projects and the baseline for native-project review. Apple and Material platform guidance covers platform interface conventions, not accessibility certification.
@@ -215,16 +227,16 @@ Core manual checks include:
 - Codex targeting and project/global scope;
 - recorded-source/ref updates and explicit moves to a new release;
 - Giget extraction from the matching release tag;
-- orchestrator dependency checkpoints and fallbacks;
+- orchestrator dependency checkpoints and fallbacks, including conditional UI-type discovery;
 - direct invocation of each working and knowledge skill;
 - token validation, deterministic CSS generation, and an expert audit;
 - separation of static checks from runtime web and native accessibility verification.
 
-Before publication, also verify all skill manifests and local documentation links.
+Before publication, also verify all skill manifests and local documentation links. After publication, run the discovery and rendering scenarios against the `v2.1.0` tag.
 
 ## Versioning
 
-Repository releases use semantic versions and form the compatibility unit. Use the complete skill set from one release and obtain the project template from that same tag. The current prepared release is `v2.0.2`. Do not mix independently updated skills or combine skills and templates from different releases.
+Repository releases use semantic versions and form the compatibility unit. Use the complete skill set from one release and obtain the project template from that same tag. The current release is `v2.1.0`, a compatible minor release that adds `ui-type-discovery` and the platform-aware HTML/CSS/SVG rendering workflow. Do not mix independently updated skills or combine skills and templates from different releases.
 
 See [shared/VERSIONING.md](shared/VERSIONING.md) for the concise release policy and [shared/SOURCE-FRESHNESS.md](shared/SOURCE-FRESHNESS.md) for knowledge-source review. Git tags and release notes are the package history; the repository deliberately has no root changelog.
 

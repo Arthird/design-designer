@@ -2,10 +2,12 @@
 
 This repository has no automated test framework. Verify the skills through focused manual exercises with disposable project workspaces. Do not add a replacement test runner, CI test matrix, or fixture suite merely to complete these checks.
 
+Use disposable local copies while preparing release changes. After publication, run the installation checks against the `v2.1.0` tag and confirm that `ui-type-discovery` is included.
+
 ## Standard verification sequence
 
-1. Run `npx skills@latest add Arthird/design-designer@v2.0.2 --list` and confirm the working and knowledge skills are discoverable.
-2. Install the complete set into a temporary project with `npx skills@latest add Arthird/design-designer@v2.0.2 --skill '*' -a codex -y`.
+1. Run `npx skills@latest add Arthird/design-designer@v2.1.0 --list` and confirm the working and knowledge skills are discoverable.
+2. Install the complete set into a temporary project with `npx skills@latest add Arthird/design-designer@v2.1.0 --skill '*' -a codex -y`.
 3. Invoke the orchestrator in a realistic project request and confirm it inspects first, then invokes dependencies at their documented checkpoints.
 4. Invoke each working skill directly and confirm it asks only for missing context and remains within its scope.
 5. Invoke each knowledge skill directly and confirm it returns criteria or decisions rather than executing changes.
@@ -32,6 +34,14 @@ These checks are distinct to the `design-designer` coordinator:
 
 ## Workflow scenarios
 
+### Direct UI type discovery
+
+Invoke `$ui-type-discovery` for a Windows 11-inspired static web prototype. Confirm that it separates `Target platform: Web` from `Visual language: Windows 11 Fluent`, inspects project rules before searching, verifies official source and license information, records exact versions and runtime requirements, and writes `library-registry.md` and `rendering-plan.md` only when needed. It must not implement components or claim that Fluent UI is automatically usable without its JavaScript runtime decision.
+
+Repeat for macOS/iOS, terminal, Windows 98/retro, and PlayStation or Xbox visual languages. Confirm that a narrow starter catalog does not stop the search, that missing mature kits are reported explicitly, and that proprietary assets are not copied without confirmed rights.
+
+For PlayStation or Xbox, confirm that an unverified community project is classified honestly. If no suitable library is verified, the result should explicitly select custom semantic HTML/CSS plus inline SVG rather than misrepresent an unrelated kit as native or complete.
+
 ### New web design system
 
 Given an existing React project with no design-system directory, ask for a responsive account dashboard. Confirm that the orchestrator:
@@ -56,7 +66,13 @@ Given existing tokens, CSS variables, and established component names, ask to ad
 
 ### Direct design-coder invocation
 
-Ask for a loading disclosure without a complete component spec. Confirm that the skill inspects first, requests or drafts only the missing spec, uses static HTML/CSS without JavaScript, and distinguishes visual state from production behavior.
+Ask for a loading disclosure without a complete component spec. Confirm that the skill inspects first, requests or drafts only the missing spec, uses static HTML/CSS without JavaScript, and distinguishes visual state from production behavior. Without a specialized visual language, it should proceed without requiring `ui-type-discovery`.
+
+With an approved CSS-only UI kit and rendering plan, confirm that it follows official loading guidance, pins the version, maps approved tokens where practical, and records usage in `rendering-report.md` and `component.md`.
+
+With a platform-specific static control that has no suitable library component, confirm that it uses embedded SVG with `viewBox`, meaningful structure, and correct informative/decorative accessibility treatment. Confirm that a separate example replaces an actual `<button>`, link, field, checkbox, select, or other interactive control with an SVG drawing and is treated as a defect.
+
+Confirm that no custom JavaScript, fake form submission, fake navigation, data loading, or application state appears. Confirm that framework-specific React/Vue/Angular code is not used as the default renderer, and that a third-party dependency is not added without explicit approval and recorded source, version, license, runtime, and limitation.
 
 ### Direct token-writer invocation
 
@@ -69,6 +85,12 @@ Supply a design system with a missing component directory, an incomplete accessi
 ### Knowledge-skill direct invocation
 
 Ask `design-tokens-standard` a token-model question and `web-accessibility` a contrast/focus question. Confirm each returns criteria and decision rules without editing project files or claiming it performed a workflow.
+
+### Rendering plan reuse and full orchestration
+
+- Invoke `$ui-type-discovery` again with an unchanged approved plan and confirm that it reuses the plan without repeating external research unless the visual language, versions, dependencies, scope, or evidence changed.
+- Request a plain framework-independent web dashboard with no specialized visual language. Confirm that `design-designer` does not call `ui-type-discovery` merely because `design-coder` will be used.
+- Request a specialized visual language. Confirm the full order: `design-designer` → `ui-type-discovery` → approved `rendering-plan.md` → `design-coder` → `rendering-report.md` → `design-auditor`. Confirm that no working skill directly launches another working skill and no cycle exists.
 
 ## Failure handling
 

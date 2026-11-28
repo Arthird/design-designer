@@ -1,0 +1,4 @@
+interface:
+  display_name: "UI Type Discovery"
+  short_description: "Find and assess UI rendering systems"
+  default_prompt: "Use $ui-type-discovery to assess platform UI rendering options and prepare an approved rendering plan."

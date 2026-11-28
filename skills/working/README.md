@@ -3,14 +3,17 @@
 These installable skills perform design-system tasks:
 
 - `design-designer` orchestrates the project workflow and delegates to the other working skills.
-- `design-coder` produces CSS-only visual component prototypes.
+- `ui-type-discovery` researches platform-inspired UI libraries and prepares verified rendering plans.
+- `design-coder` produces framework-independent static HTML/CSS/SVG component prototypes from approved specifications and rendering decisions.
 - `design-auditor` performs expert design-system audits.
 - `token-writer` authors and validates DTCG tokens and regenerates CSS.
 
 Install one or more:
 
 ```bash
-npx skills@latest add Arthird/design-designer --skill design-designer --skill design-coder --skill design-auditor --skill token-writer
+npx skills@latest add Arthird/design-designer --skill design-designer --skill ui-type-discovery --skill design-coder --skill design-auditor --skill token-writer
 ```
+
+Installation commands use the published repo ref until a new release containing `ui-type-discovery` is prepared. Inspect the current release before installing a pinned set.
 
 CLI discovery excludes `README.md`; installable units are the skill directories containing `SKILL.md`.

@@ -43,6 +43,16 @@ Document intended native semantics, accessible name, keyboard behavior, focus, e
 
 List required design-system tokens, components, assets, and generated styles.
 
+## Visual rendering
+
+Complete this optional section only when the component uses a specialized visual language or renderer. State `Not applicable.` for ordinary semantic HTML/CSS.
+
+- **Visual language:** <approved platform-like direction>
+- **UI kit / library:** <exact name and version, or `Custom HTML/CSS/inline SVG`>
+- **Renderer:** <library component, HTML/CSS, inline SVG, or mixed usage by part>
+- **Assets and dependencies:** <official source, license, runtime, and approval status>
+- **Static limitations:** <unimplemented behavior, simplified visuals, and unverified constraints>
+
 ## Exceptions
 
 State `None.` or link each local exception and its recorded accessibility impact.

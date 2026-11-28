@@ -1,4 +1,4 @@
 interface:
   display_name: "Design Auditor"
-  short_description: "Audit tokens, specs, semantics, and CSS prototypes"
+  short_description: "Audit design systems and HTML/CSS/SVG prototypes"
   default_prompt: "Use $design-auditor to review this design system and report actionable findings."

@@ -21,10 +21,10 @@ For contributor-level acceptance checks, use the canonical [manual verification 
 | `web-accessibility` | knowledge | Before recording a color pair, reviewing contrast implications, or claiming a token choice satisfies accessibility. | Mandatory when color or accessibility claims are involved. | Preserve the risk as unverified and do not claim compliance. |
 | `apple-platform-guidance` | knowledge | Before choosing units, styles, or native mappings for a confirmed Apple target. | Mandatory for Apple targets. | Document the conversion as unresolved and use no guessed native equivalent. |
 | `material-platform-guidance` | knowledge | Before choosing units, styles, or native mappings for a confirmed Material target. | Mandatory for Material targets. | Document the conversion as unresolved and use no guessed native equivalent. |
-| `design-auditor` | working | After token changes and generation, before saying a component or system is reviewed. | Mandatory for a reviewed status, normally coordinated by `design-designer`. | Leave review status unchanged and report that specialist audit is outstanding. |
-| `design-coder` | working | Only after approved token changes need to be reflected in component CSS. | Optional; triggered by component work, normally coordinated by `design-designer`. | Do not broaden into prototype files; report the component handoff. |
+| `design-auditor` | handoff target | After token changes and generation, before saying a component or system is reviewed. It is not invoked by this skill. | Mandatory for a reviewed status; coordinated by `design-designer` or the user. | Leave review status unchanged and report that specialist audit is outstanding. |
+| `design-coder` | handoff target | Only after approved token changes need to be reflected in component CSS. It is not invoked by this skill. | Optional; coordinated by `design-designer` as separate component work. | Do not broaden into prototype files; report the component handoff. |
 
-This skill does not invoke the orchestrator as a source of knowledge and does not create circular dependencies. It consults knowledge first, edits token data second, and reports a handoff when component work is needed.
+This skill does not invoke another working skill and does not create circular dependencies. It consults knowledge first, edits token data second, and reports a handoff when audit or component work is needed.
 
 ## Context to inspect
 

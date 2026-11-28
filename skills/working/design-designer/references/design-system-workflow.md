@@ -25,6 +25,18 @@ design-system/
     └── style-template.css
 ```
 
+Projects that use a specialized visual language or an external static renderer may add a rendering subsystem only when it carries real decisions:
+
+```text
+design-system/
+└── rendering/
+    ├── library-registry.md       # verified project candidates and decisions
+    ├── rendering-plan.md         # approved renderer and dependency policy
+    └── rendering-report.md       # implementation evidence by component
+```
+
+Do not create empty rendering files for ordinary projects that use semantic HTML/CSS directly. `ui-type-discovery` owns the registry and plan; `design-coder` owns the report after implementation.
+
 Do not add a parallel token source, manually maintained global stylesheet, or duplicate component documentation without a concrete reason. Shared knowledge and templates live outside the skill directories so installed skills remain focused.
 
 ## Decision ledger
@@ -45,7 +57,8 @@ Mark each material decision `Confirmed`, `Assumed`, or `Open`. Do not silently t
 2. **Rules:** `base-rules.md` is specific enough to guide component decisions; the user reviews or approves it.
 3. **Tokens:** `token-writer` has consulted `design-tokens-standard`, the token source validates, target-platform implications are reviewed, and generated CSS is reproducible.
 4. **Component specification:** variants and states are classified before visual prototyping.
-5. **Review:** `design-auditor` provides expert findings after tokens, specs, and prototypes; unresolved confirmed violations prevent `Reviewed`.
+5. **Rendering decision:** a specialized visual language has a current approved plan with verified sources, versions, licenses, runtime policy, component coverage, and limitations; otherwise the project records an approved custom HTML/CSS/inline SVG fallback. The plan precedes `design-coder`, and the rendering report follows implementation.
+6. **Review:** `design-auditor` provides expert findings after tokens, specs, the rendering decision where applicable, and prototypes; unresolved confirmed violations prevent `Reviewed`.
 
 Accepted risk is recorded with scope and impact. User approval does not convert an accessibility failure into compliance.
 
@@ -75,6 +88,14 @@ Before replacing or creating a parallel system:
 2. Decide whether to extend, refactor, or replace.
 3. Explain migration and compatibility impact and obtain explicit user direction.
 4. Track deferred migration rather than changing unrelated callers silently.
+
+## Visual rendering
+
+Keep the actual target platform separate from the visual language. A web prototype styled like Windows, macOS, iOS, Material, a terminal, or a game console is still a web prototype and does not prove native APIs or platform behavior.
+
+Use `ui-type-discovery` when a specialized visual language requires a renderer decision, a search is explicitly requested, or no current approved plan covers the components. Reuse an approved plan whose language, target, exact versions, dependencies, component coverage, and evidence still apply. Do not create a rendering subsystem for ordinary semantic HTML/CSS work.
+
+For each component, prefer an approved suitable HTML/CSS library component, then justified inline SVG for a static visual gap, then custom semantic HTML/CSS. Keep text as HTML, keep controls as native elements, and embed useful SVG in the HTML document. Do not substitute a drawn interface for a real interactive control or use a runtime-dependent library without an explicit policy decision.
 
 ## Project changelog
 
