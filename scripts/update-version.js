@@ -128,6 +128,16 @@ function updateVersionReferences(fromVersion, toVersion, cwd) {
   return changed;
 }
 
+function verifyVersionReferences(version, cwd) {
+  for (const file of VERSION_REFERENCE_FILES) {
+    const original = readOptional(file, cwd);
+    if (original === null) fail(`${file} does not exist.`);
+    if (!original.includes(`v${version}`)) {
+      fail(`${file} must contain the updated version v${version}.`);
+    }
+  }
+}
+
 function updatePlainVersion(version, cwd) {
   const original = readOptional('VERSION', cwd);
   if (original === null) return false;
@@ -169,6 +179,7 @@ function updateVersion(value, cwd = process.cwd()) {
   updatePlainVersion(version, cwd);
   updateJsonVersion(version, cwd);
   updateVersionContexts(version, cwd);
+  verifyVersionReferences(version, cwd);
   process.stdout.write(`Updated version references to ${version}.\n`);
   return version;
 }

@@ -80,6 +80,11 @@ function main() {
   assert.equal(git(repo, 'log', '-1', '--format=%s'), 'chore(release): 1.0.1 [skip ci]');
   const readme = fs.readFileSync(path.join(repo, 'README.md'), 'utf8');
   assert.match(readme, /<!-- VERSION:START -->\n\*\*Current version:\*\* v1\.0\.1\n<!-- VERSION:END -->/);
+  for (const file of FILES.filter((name) => name.endsWith('README.md') || name === 'shared/VERSIONING.md' || name === 'shared/workflow/manual-verification.md')) {
+    const text = fs.readFileSync(path.join(repo, file), 'utf8');
+    assert.match(text, /v1\.0\.1/);
+    assert.doesNotMatch(text, /v1\.0\.0/);
+  }
   assert.equal(git(repo, 'status', '--porcelain'), '');
   assert.equal(git(repo, 'rev-list', '-n', '1', 'v1.0.1'), git(repo, 'rev-parse', 'HEAD'));
 
