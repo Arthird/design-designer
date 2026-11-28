@@ -47,7 +47,7 @@ async function testVersionFiles() {
   write(
     'skills/working/README.md',
     cwd,
-    `${fs.readFileSync(path.join(cwd, 'skills/working/README.md'), 'utf8')}\nInstall with v0.0.0.\n`,
+    `${fs.readFileSync(path.join(cwd, 'skills/working/README.md'), 'utf8')}\nInstall with design-designer@v0.0.0.\n`,
   );
 
   const readmeBeforeUpdate = fs.readFileSync(path.join(cwd, 'README.md'), 'utf8');
@@ -68,7 +68,8 @@ async function testVersionFiles() {
       /<context ref="file:\/\/\/home\/tema\/projects\/skills\/design-designer\/README\.md#L7:9">\n<!-- VERSION:START -->\n\*\*Current version:\*\* v2\.3\.4\n<!-- VERSION:END -->/,
     );
   }
-  assert.match(fs.readFileSync(path.join(cwd, 'skills/working/README.md'), 'utf8'), /Install with v2\.3\.4\./);
+  assert.match(fs.readFileSync(path.join(cwd, 'skills/working/README.md'), 'utf8'), /Install with design-designer@v2\.3\.4\./);
+  assert.doesNotMatch(fs.readFileSync(path.join(cwd, 'skills/working/README.md'), 'utf8'), /design-designer@v0\.0\.0/);
 
   const readmeBeforeSecondRun = fs.readFileSync(path.join(cwd, 'README.md'), 'utf8');
   updateVersion('2.3.4', cwd);

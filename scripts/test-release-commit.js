@@ -40,6 +40,11 @@ function main() {
   git(root, 'clone', `file://${remote}`, repo);
 
   for (const file of FILES) copy(file, repo);
+  for (const file of FILES.filter((name) => name.endsWith('.md'))) {
+    const target = path.join(repo, file);
+    const next = fs.readFileSync(target, 'utf8').replaceAll('v2.2.0', 'v1.0.0').replaceAll('v2.2.3', 'v1.0.0');
+    fs.writeFileSync(target, next, 'utf8');
+  }
   fs.symlinkSync(path.join(ROOT, 'node_modules'), path.join(repo, 'node_modules'), 'dir');
   git(repo, 'config', 'user.name', 'Release Test');
   git(repo, 'config', 'user.email', 'release-test@example.invalid');
@@ -83,7 +88,9 @@ function main() {
   for (const file of FILES.filter((name) => name.endsWith('README.md') || name === 'shared/VERSIONING.md' || name === 'shared/workflow/manual-verification.md')) {
     const text = fs.readFileSync(path.join(repo, file), 'utf8');
     assert.match(text, /v1\.0\.1/);
-    assert.doesNotMatch(text, /v1\.0\.0/);
+    for (const match of text.matchAll(/design-designer@v(\d+\.\d+\.\d+)|templates#v(\d+\.\d+\.\d+)/g)) {
+      assert.equal(match[1] || match[2], '1.0.1', file);
+    }
   }
   assert.equal(git(repo, 'status', '--porcelain'), '');
   assert.equal(git(repo, 'rev-list', '-n', '1', 'v1.0.1'), git(repo, 'rev-parse', 'HEAD'));

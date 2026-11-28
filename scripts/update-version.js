@@ -122,7 +122,13 @@ function updateVersionReferences(fromVersion, toVersion, cwd) {
   for (const file of VERSION_REFERENCE_FILES) {
     const original = readOptional(file, cwd);
     if (original === null) fail(`${file} does not exist.`);
-    const next = original.replaceAll(`v${fromVersion}`, `v${toVersion}`);
+    let next = original;
+    for (const match of original.matchAll(/design-designer@v(\d+\.\d+\.\d+)|templates#v(\d+\.\d+\.\d+)/g)) {
+      const found = match[1] || match[2];
+      if (found === toVersion) continue;
+      next = next.replaceAll(`design-designer@v${found}`, `design-designer@v${toVersion}`);
+      next = next.replaceAll(`templates#v${found}`, `templates#v${toVersion}`);
+    }
     if (writeIfChanged(file, original, next, cwd)) changed += 1;
   }
   return changed;
@@ -134,6 +140,13 @@ function verifyVersionReferences(version, cwd) {
     if (original === null) fail(`${file} does not exist.`);
     if (!original.includes(`v${version}`)) {
       fail(`${file} must contain the updated version v${version}.`);
+    }
+    for (const line of original.split('\n')) {
+      if (!/npx (?:skills@latest add Arthird\/design-designer@v|giget@latest gh:Arthird\/design-designer\/templates#v)/.test(line)) continue;
+      for (const match of line.matchAll(/design-designer@v(\d+\.\d+\.\d+)|templates#v(\d+\.\d+\.\d+)/g)) {
+        const found = match[1] || match[2];
+        if (found !== version) fail(`${file} contains stale version v${found}.`);
+      }
     }
   }
 }
