@@ -68,6 +68,7 @@ async function testVersionFiles() {
       /<context ref="file:\/\/\/home\/tema\/projects\/skills\/design-designer\/README\.md#L7:9">\n<!-- VERSION:START -->\n\*\*Current version:\*\* v2\.3\.4\n<!-- VERSION:END -->/,
     );
   }
+  assert.match(fs.readFileSync(path.join(cwd, 'skills/working/README.md'), 'utf8'), /Install with v2\.3\.4\./);
 
   const readmeBeforeSecondRun = fs.readFileSync(path.join(cwd, 'README.md'), 'utf8');
   updateVersion('2.3.4', cwd);

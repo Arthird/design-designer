@@ -65,13 +65,17 @@ function updateReadme(version, cwd) {
     fail('README.md must contain exactly one VERSION block.');
   }
 
+  const currentVersion = original.slice(start, end).match(/\*\*Current version:\*\* v(\d+\.\d+\.\d+)/);
+  if (!currentVersion) fail('README.md current version is not readable.');
+
   const block = `${README_START}\n**Current version:** v${version}\n${README_END}`;
-  return writeIfChanged(
+  writeIfChanged(
     'README.md',
     original,
     original.slice(0, start) + block + original.slice(end + README_END.length),
     cwd,
   );
+  return currentVersion[1];
 }
 
 function escapeRegExp(value) {
@@ -111,18 +115,14 @@ function updateVersionContexts(version, cwd) {
   return changed;
 }
 
-function updateVersionReferences(version, cwd) {
-  const current = readOptional('README.md', cwd);
-  if (current === null) fail('README.md does not exist.');
-  const match = current.match(/\*\*Current version:\*\* v(\d+\.\d+\.\d+)/);
-  if (!match) fail('README.md current version is not readable.');
-  if (match[1] === version) return 0;
+function updateVersionReferences(fromVersion, toVersion, cwd) {
+  if (fromVersion === toVersion) return 0;
 
   let changed = 0;
   for (const file of VERSION_REFERENCE_FILES) {
     const original = readOptional(file, cwd);
     if (original === null) fail(`${file} does not exist.`);
-    const next = original.replaceAll(`v${match[1]}`, `v${version}`);
+    const next = original.replaceAll(`v${fromVersion}`, `v${toVersion}`);
     if (writeIfChanged(file, original, next, cwd)) changed += 1;
   }
   return changed;
@@ -164,8 +164,8 @@ function updateJsonVersion(version, cwd) {
 
 function updateVersion(value, cwd = process.cwd()) {
   const version = parseVersion(value);
-  updateReadme(version, cwd);
-  updateVersionReferences(version, cwd);
+  const previousVersion = updateReadme(version, cwd);
+  updateVersionReferences(previousVersion, version, cwd);
   updatePlainVersion(version, cwd);
   updateJsonVersion(version, cwd);
   updateVersionContexts(version, cwd);
